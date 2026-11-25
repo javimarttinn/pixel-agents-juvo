@@ -18,8 +18,8 @@ Fork de [pixel-agents-hq/pixel-agents](https://github.com/pixel-agents-hq/pixel-
 Requisitos: Node.js 20 o superior, Git y Claude Code instalados.
 
 ```powershell
-git clone https://github.com/javimarttinn/pixel-agents.git
-cd pixel-agents
+git clone https://github.com/javimarttinn/pixel-agents-juvo.git
+cd pixel-agents-juvo
 .\scripts\oficina.ps1
 ```
 
