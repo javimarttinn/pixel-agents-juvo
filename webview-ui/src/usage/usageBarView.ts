@@ -27,10 +27,15 @@ export interface UsageBarView {
 
 /** One bar's view of a window at `nowMs`. */
 export function usageBarView(window: UsageWindow | undefined, nowMs: number): UsageBarView {
-  if (!window) return { remaining: null, level: 'unknown', percent: '--', reset: 'no data yet' };
+  if (!window) return { remaining: null, level: 'unknown', percent: '--', reset: 'sin datos aún' };
   const resetAtMs = window.resetsAt * 1000;
   if (resetAtMs <= nowMs) {
-    return { remaining: 1, level: 'ok', percent: '100%', reset: 'reset since the last report' };
+    return {
+      remaining: 1,
+      level: 'ok',
+      percent: '100%',
+      reset: 'reiniciado desde el último aviso',
+    };
   }
   const remaining = Math.min(1, Math.max(0, (100 - window.usedPercentage) / 100));
   const level =
@@ -43,7 +48,7 @@ export function usageBarView(window: UsageWindow | undefined, nowMs: number): Us
     remaining,
     level,
     percent: `${Math.round(remaining * 100)}%`,
-    reset: `resets in ${formatDuration(resetAtMs - nowMs)}`,
+    reset: `se reinicia en ${formatDuration(resetAtMs - nowMs)}`,
   };
 }
 
@@ -74,7 +79,8 @@ export function freshnessLabel(
   nowMs: number,
   providerName: string,
 ): string {
-  if (updatedAtMs === undefined) return `Updates once a ${providerName} session replies`;
+  if (updatedAtMs === undefined)
+    return `Se actualiza cuando responda una sesión de ${providerName}`;
   const age = nowMs - updatedAtMs;
-  return age < 60_000 ? 'Updated just now' : `Updated ${formatDuration(age)} ago`;
+  return age < 60_000 ? 'Actualizado ahora mismo' : `Actualizado hace ${formatDuration(age)}`;
 }

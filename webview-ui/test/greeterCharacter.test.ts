@@ -10,10 +10,10 @@ import { greeterPalette } from '../src/characters/profiles.js';
 import { GREETER_CHARACTER_ID } from '../src/constants.js';
 
 describe('greeterPalette', () => {
-  it("is the default cast's Suit", () => {
+  it("is the default cast's Planner", () => {
     const index = greeterPalette(DEFAULT_CHARACTER_PROFILES);
     expect(DEFAULT_CHARACTER_PROFILES[index].id).toBe(GREETER_CHARACTER_ID);
-    expect(DEFAULT_CHARACTER_PROFILES[index].name).toBe('Suit');
+    expect(DEFAULT_CHARACTER_PROFILES[index].name).toBe('Planner');
   });
 
   it('survives a rename', () => {

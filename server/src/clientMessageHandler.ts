@@ -46,6 +46,7 @@ import { recentCharactersMessage, recordCharacterUse } from './recentCharacters.
 import { launchStandaloneAgent } from './terminal/standaloneAgentLauncher.js';
 import type { TerminalSessions } from './terminal/terminalSessions.js';
 import { applyUsageBridgeChoice, usageSnapshotMessages } from './usageLimits.js';
+import { xpStateMessage } from './xp.js';
 
 type WsSend = (message: Record<string, unknown>) => void;
 
@@ -692,6 +693,9 @@ function handleWebviewReady(send: WsSend, ctx: ClientMessageContext): void {
   if (ctx.privileged) {
     for (const message of usageSnapshotMessages()) send({ ...message });
   }
+
+  // 4a-quater. Office levels (XP per lead, role and skill).
+  send({ ...xpStateMessage() });
 
   // 4b. Directory→Area mappings (must arrive before existingAgents so the
   // webview seat-preference logic has the dict when characters are created).

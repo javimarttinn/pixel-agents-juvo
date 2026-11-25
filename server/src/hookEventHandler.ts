@@ -1,5 +1,6 @@
 import * as path from 'path';
 
+import { SUBTASK_STATUS_PREFIX } from '../../core/src/constants.js';
 import type { AgentEvent, HookProvider } from '../../core/src/provider.js';
 import type { AgentStateStore } from './agentStateStore.js';
 import { SESSION_END_GRACE_MS } from './constants.js';
@@ -529,7 +530,7 @@ export class HookEventHandler {
 
     // Create child sub-agent character immediately (same as old behavior).
     const subToolId = `hook-sub-${agentType}-${Date.now()}`;
-    const status = `Subtask: ${agentType}`;
+    const status = `${SUBTASK_STATUS_PREFIX}${agentType}`;
 
     // Track sub-agent
     let subTools = agent.activeSubagentToolIds.get(parentToolId);

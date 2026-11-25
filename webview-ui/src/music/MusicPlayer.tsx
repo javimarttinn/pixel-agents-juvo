@@ -205,8 +205,8 @@ export function MusicPlayer({ mobile }: { mobile: boolean }) {
           size="icon_lg"
           className="w-32! h-32! shrink-0"
           onClick={() => officeRadio.skip()}
-          aria-label="Next tune"
-          title="Next tune"
+          aria-label="Siguiente canción"
+          title="Siguiente canción"
         >
           <PixelIcon name="skip" />
         </Button>
@@ -228,8 +228,8 @@ export function MusicPlayer({ mobile }: { mobile: boolean }) {
           className="w-28! h-32! shrink-0"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          aria-label="Music settings"
-          title="Mood and song code"
+          aria-label="Ajustes de música"
+          title="Ambiente y código de canción"
         >
           <PixelIcon name="settings" />
         </Button>
@@ -266,7 +266,7 @@ export function MusicPlayer({ mobile }: { mobile: boolean }) {
         type="button"
         {...sheet.handlers}
         onClick={() => settle(true)}
-        aria-label="Show music player"
+        aria-label="Mostrar reproductor"
         tabIndex={shown ? -1 : 0}
         className={`absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 px-16 py-6 text-2xs text-text-muted select-none touch-none bg-transparent border-0 ${shown ? '' : 'pointer-events-auto'}`}
         style={{
@@ -278,7 +278,7 @@ export function MusicPlayer({ mobile }: { mobile: boolean }) {
         <span className="flex rotate-180">
           <PixelIcon name="down" scale={1} />
         </span>
-        <span className="whitespace-nowrap leading-none">Swipe up for music</span>
+        <span className="whitespace-nowrap leading-none">Desliza hacia arriba para la música</span>
       </button>
       <div
         ref={rootRef}

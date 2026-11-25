@@ -39,3 +39,14 @@ export const TRANSPORT_STATE_CONNECTING = 'connecting';
 export const TRANSPORT_STATE_CONNECTED = 'connected';
 export const TRANSPORT_STATE_RECONNECTING = 'reconnecting';
 export const TRANSPORT_STATE_DISCONNECTED = 'disconnected';
+
+// ── Skills ───────────────────────────────────────────────────
+// A Skill tool call's status line is this prefix + the skill's name. The
+// webview reads the name back from it (toolUtils.skillNameFromStatus) to pin
+// the skill's badge over the agent for the rest of the turn.
+
+export const SKILL_STATUS_PREFIX = 'Skill: ';
+
+/** A sub-agent spawn's status line is this prefix + its description; the
+ *  webview reads the sub-agent's label back from it. */
+export const SUBTASK_STATUS_PREFIX = 'Subtarea: ';

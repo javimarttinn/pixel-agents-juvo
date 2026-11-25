@@ -288,7 +288,7 @@ export function CharactersView({ phone, onClose }: CharactersViewProps) {
       style={{ zIndex: CHARACTERS_VIEW_Z_INDEX }}
     >
       {!studio ? (
-        <p className="chv-loading">Loading characters…</p>
+        <p className="chv-loading">Cargando personajes…</p>
       ) : (
         <StudioContext.Provider value={studio}>
           {phone ? (
@@ -303,14 +303,14 @@ export function CharactersView({ phone, onClose }: CharactersViewProps) {
               <div className="chv-backdrop bg-black/50" onClick={requestClose} />
               <div className="chv-panel" ref={desk.panel}>
                 <header className="chv-head">
-                  <div className="chv-hist" role="group" aria-label="History">
+                  <div className="chv-hist" role="group" aria-label="Historial">
                     <HistoryButtons />
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
                     className="chv-close"
-                    aria-label="Close characters"
+                    aria-label="Cerrar personajes"
                     onClick={requestClose}
                   >
                     <PixelIcon name="close" />
@@ -331,16 +331,16 @@ export function CharactersView({ phone, onClose }: CharactersViewProps) {
       <Modal
         isOpen={confirmClose}
         onClose={() => setConfirmClose(false)}
-        title="Unsaved changes"
+        title="Cambios sin guardar"
         zIndex={CHARACTERS_VIEW_Z_INDEX + 1}
       >
         <div className="flex flex-col gap-8 px-10 py-4">
           <p className="text-base m-0">
-            Your changes to the characters aren't saved. Save them before closing?
+            Tus cambios en los personajes no están guardados. ¿Guardarlos antes de cerrar?
           </p>
           <div className="flex gap-4 justify-end flex-wrap">
             <Button variant="default" onClick={() => setConfirmClose(false)}>
-              Keep editing
+              Seguir editando
             </Button>
             <Button
               variant="default"
@@ -350,7 +350,7 @@ export function CharactersView({ phone, onClose }: CharactersViewProps) {
                 onClose();
               }}
             >
-              Discard
+              Descartar
             </Button>
             <Button
               variant="accent"
@@ -361,7 +361,7 @@ export function CharactersView({ phone, onClose }: CharactersViewProps) {
                 onClose();
               }}
             >
-              Save
+              Guardar
             </Button>
           </div>
         </div>

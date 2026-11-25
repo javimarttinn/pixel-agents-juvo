@@ -72,28 +72,28 @@ export function ColorPicker({
   return (
     <div className="fade-stagger flex flex-col py-8 px-10 bg-bg-dark border-2 border-border rounded-none">
       <ColorSlider
-        label="Hue"
+        label="Tono"
         value={value.h}
         min={isColorize ? 0 : -180}
         max={isColorize ? 360 : 180}
         onChange={(v) => handleChange('h', v)}
       />
       <ColorSlider
-        label="Saturation"
+        label="Saturación"
         value={value.s}
         min={isColorize ? 0 : -100}
         max={100}
         onChange={(v) => handleChange('s', v)}
       />
       <ColorSlider
-        label="Brightness"
+        label="Brillo"
         value={value.b}
         min={-100}
         max={100}
         onChange={(v) => handleChange('b', v)}
       />
       <ColorSlider
-        label="Contrast"
+        label="Contraste"
         value={value.c}
         min={-100}
         max={100}
@@ -109,9 +109,9 @@ export function ColorPicker({
               type="button"
               onClick={() => onChange({ ...value, colorize: !value.colorize || undefined })}
               className="flex items-center gap-8 shrink-0 bg-transparent border-0 p-0 cursor-pointer text-left"
-              title="Toggle colorize mode"
+              title="Activar/desactivar modo colorear"
             >
-              <span className="text-sm text-text-muted w-64 shrink-0">Colorize</span>
+              <span className="text-sm text-text-muted w-64 shrink-0">Colorear</span>
               <span
                 className={`w-18 h-18 border-2 border-border inline-flex items-center justify-center text-2xs leading-none text-text shrink-0 ${
                   value.colorize ? 'bg-accent' : 'bg-bg'
@@ -134,10 +134,10 @@ export function ColorPicker({
               variant={copyActive ? 'active' : 'default'}
               size="sm"
               onClick={onCopy}
-              title="Copy color from another item — click one in the office"
+              title="Copiar el color de otro objeto: pulsa uno en la oficina"
               className="mt-6 mr-4"
             >
-              Copy
+              Copiar
             </Button>
           )}
           {onReset && (
@@ -145,10 +145,10 @@ export function ColorPicker({
               variant="default"
               size="sm"
               onClick={onReset}
-              title="Reset to default"
+              title="Volver al valor por defecto"
               className="mt-6"
             >
-              Reset
+              Restablecer
             </Button>
           )}
         </div>

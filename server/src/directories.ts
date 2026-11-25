@@ -75,17 +75,17 @@ export function normalizeDirectoryPath(raw: string): string {
 export function validateDirectoryPath(raw: string): DirectorySaveResult {
   const trimmed = raw.trim();
   if (trimmed.length === 0) {
-    return { ok: false, reason: 'Enter a directory path.' };
+    return { ok: false, reason: 'Escribe la ruta de una carpeta.' };
   }
   const resolved = path.resolve(expandTilde(trimmed));
   let stats: fs.Stats;
   try {
     stats = fs.statSync(resolved);
   } catch {
-    return { ok: false, reason: `No such directory: ${resolved}` };
+    return { ok: false, reason: `No existe la carpeta: ${resolved}` };
   }
   if (!stats.isDirectory()) {
-    return { ok: false, reason: `Not a directory: ${resolved}` };
+    return { ok: false, reason: `No es una carpeta: ${resolved}` };
   }
   return { ok: true, path: resolved };
 }

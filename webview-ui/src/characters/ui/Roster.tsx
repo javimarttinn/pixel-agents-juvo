@@ -19,31 +19,31 @@ const FRONT: SpriteView = { kind: 'frame', facing: 'down', frame: 0 };
 
 /** The roster's actions on the cast, as both rosters list them. */
 const ROSTER_ACTIONS: { label: string; title?: string; run: (a: CastActions) => void }[] = [
-  { label: 'Duplicate', run: (a) => a.duplicate() },
+  { label: 'Duplicar', run: (a) => a.duplicate() },
   {
-    label: 'New random',
-    title: 'Add a new character with random clothes, hair and colours',
+    label: 'Nuevo al azar',
+    title: 'Añadir un personaje con ropa, pelo y colores al azar',
     run: (a) => a.addRandom(),
   },
   {
-    label: 'Randomize',
-    title: 'Re-roll the character you are editing',
+    label: 'Aleatorio',
+    title: 'Volver a sortear el personaje que editas',
     run: (a) => a.randomizeCurrent(),
   },
   {
-    label: 'Save PNG',
-    title: 'Save the character you are editing as a single sprite sheet',
+    label: 'Guardar PNG',
+    title: 'Guardar el personaje que editas como una hoja de sprites',
     run: (a) => void a.savePng(),
   },
   {
-    label: 'Save config',
+    label: 'Guardar configuración',
     title:
       "Save this character's settings (parts, colours, pixel edits) as a .json file you can load back later",
     run: (a) => void a.saveConfig(),
   },
   {
-    label: 'Load config',
-    title: 'Add characters from saved .json config files',
+    label: 'Cargar configuración',
+    title: 'Añadir personajes desde archivos .json guardados',
     run: (a) => a.loadConfigs(),
   },
 ];
@@ -53,11 +53,11 @@ export function HistoryButtons() {
   const { cast, undo, redo } = useStudio();
   return (
     <>
-      <ViewButton title="Undo (⌘Z)" icon="undo" disabled={!cast.canUndo} onClick={undo}>
-        Undo
+      <ViewButton title="Deshacer (⌘Z)" icon="undo" disabled={!cast.canUndo} onClick={undo}>
+        Deshacer
       </ViewButton>
-      <ViewButton title="Redo (⇧⌘Z)" icon="redo" disabled={!cast.canRedo} onClick={redo}>
-        Redo
+      <ViewButton title="Rehacer (⇧⌘Z)" icon="redo" disabled={!cast.canRedo} onClick={redo}>
+        Rehacer
       </ViewButton>
     </>
   );
@@ -67,8 +67,8 @@ export function RosterPane() {
   const { renderer, cast, dpr } = useStudio();
   const actions = useCastActions();
   return (
-    <section className="chv-box chv-roster" aria-label="Roster">
-      <h2>Roster</h2>
+    <section className="chv-box chv-roster" aria-label="Plantilla">
+      <h2>Plantilla</h2>
       <div className="chv-rail">
         {cast.profiles.map((p, i) => (
           <div key={i} className="chv-card" aria-current={i === cast.current}>
@@ -83,8 +83,8 @@ export function RosterPane() {
             </button>
             <input
               value={p.name ?? ''}
-              placeholder="Name"
-              aria-label={`Name for char_${i}`}
+              placeholder="Nombre"
+              aria-label={`Nombre de char_${i}`}
               onChange={(e) => {
                 const name = e.target.value;
                 castStore.updateAt(i, (draft) => {
@@ -96,7 +96,7 @@ export function RosterPane() {
               <button
                 type="button"
                 className="chv-card-x"
-                aria-label={`Remove char_${i}`}
+                aria-label={`Quitar char_${i}`}
                 onClick={() => actions.remove(i)}
               >
                 <PixelIcon name="close" scale={1} />
@@ -116,10 +116,10 @@ export function RosterPane() {
         ))}
         <ViewButton
           className="chv-roster-zip"
-          title="Save every character's sheet and config in one .zip"
+          title="Guardar la hoja y la configuración de todos los personajes en un .zip"
           onClick={() => void actions.saveRoster()}
         >
-          Save roster .zip
+          Guardar plantilla .zip
         </ViewButton>
       </div>
     </section>
@@ -135,12 +135,12 @@ function MoreSheet({ onClose }: { onClose: () => void }) {
     action();
   };
   return (
-    <div className="chv-box chv-more" role="dialog" aria-label="Character actions">
+    <div className="chv-box chv-more" role="dialog" aria-label="Acciones del personaje">
       <label className="chv-more-name">
-        <span>Name</span>
+        <span>Nombre</span>
         <input
           value={profile.name ?? ''}
-          placeholder="Name"
+          placeholder="Nombre"
           onChange={(e) => {
             const name = e.target.value;
             castStore.update((draft) => {
@@ -158,13 +158,13 @@ function MoreSheet({ onClose }: { onClose: () => void }) {
         ))}
         <ArmedButton
           as={ViewButton}
-          label="Remove"
+          label="Quitar"
           confirmLabel="Tap to confirm"
           disabled={cast.profiles.length < 2}
           onConfirm={run(() => actions.remove(cast.current))}
         />
         <ViewButton primary onClick={run(() => void actions.saveRoster())}>
-          Save roster .zip
+          Guardar plantilla .zip
         </ViewButton>
       </div>
     </div>
@@ -213,7 +213,7 @@ export function PhoneDock() {
   const editing = phoneMode !== 'wardrobe';
   return (
     <>
-      <nav ref={dock} className="chv-dock" aria-label="Roster">
+      <nav ref={dock} className="chv-dock" aria-label="Plantilla">
         <div className="chv-dock-rail" ref={rail}>
           {cast.profiles.map((p, i) => (
             <button
@@ -237,7 +237,7 @@ export function PhoneDock() {
           <button
             type="button"
             className="chv-dbtn"
-            title="Add a new character"
+            title="Añadir un personaje nuevo"
             onClick={() => {
               if (editor) closeEditor();
               setPhoneMode('wardrobe');
@@ -245,12 +245,12 @@ export function PhoneDock() {
             }}
           >
             <PixelIcon name="plus" />
-            <span>New</span>
+            <span>Nuevo</span>
           </button>
           <button
             type="button"
             className="chv-dbtn chv-dbtn-primary"
-            title="Edit this character's sheet frame by frame"
+            title="Editar la hoja de este personaje fotograma a fotograma"
             onClick={() => {
               setMoreOpen(false);
               if (editor) closeEditor();
@@ -264,11 +264,11 @@ export function PhoneDock() {
             type="button"
             className="chv-dbtn chv-dock-more"
             aria-expanded={moreOpen}
-            title="More actions"
+            title="Más acciones"
             onClick={() => setMoreOpen((open) => !open)}
           >
             <PixelIcon name="more" />
-            <span>More</span>
+            <span>Más</span>
           </button>
         </div>
       </nav>

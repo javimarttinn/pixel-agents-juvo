@@ -46,55 +46,55 @@ export interface TabDef {
 }
 
 export const TABS: readonly TabDef[] = [
-  { key: 'body', label: 'Body', pickers: [{ key: 'skin', label: 'Skin' }], piece: 'body' },
+  { key: 'body', label: 'Cuerpo', pickers: [{ key: 'skin', label: 'Piel' }], piece: 'body' },
   {
     key: 'eyes',
-    label: 'Eyes',
+    label: 'Ojos',
     pickers: [
-      { key: 'eyes', label: 'Eyes' },
-      { key: 'lashes', label: 'Lashes' },
+      { key: 'eyes', label: 'Ojos' },
+      { key: 'lashes', label: 'Pestañas' },
     ],
     piece: 'whites',
   },
   {
     key: 'hair',
-    label: 'Hair',
-    pickers: [{ key: 'hair', label: 'Colour' }],
+    label: 'Pelo',
+    pickers: [{ key: 'hair', label: 'Color' }],
     piece: 'hair',
     inner: 'beard',
   },
   {
     key: 'top',
-    label: 'Top',
-    pickers: [{ key: 'top', label: 'Colour' }],
+    label: 'Camiseta',
+    pickers: [{ key: 'top', label: 'Color' }],
     piece: 'top',
     under: 'utop',
   },
   {
     key: 'jacket',
-    label: 'Jacket',
-    pickers: [{ key: 'jacket', label: 'Colour' }],
+    label: 'Chaqueta',
+    pickers: [{ key: 'jacket', label: 'Color' }],
     piece: 'jacket',
   },
   {
     key: 'pants',
-    label: 'Pants',
-    pickers: [{ key: 'pants', label: 'Colour' }],
+    label: 'Pantalón',
+    pickers: [{ key: 'pants', label: 'Color' }],
     piece: 'pants',
     under: 'under',
   },
-  { key: 'shoes', label: 'Shoes', pickers: [{ key: 'shoes', label: 'Colour' }], piece: 'shoes' },
+  { key: 'shoes', label: 'Zapatos', pickers: [{ key: 'shoes', label: 'Color' }], piece: 'shoes' },
   {
     key: 'full',
-    label: 'Outfit',
+    label: 'Conjunto',
     pickers: [
-      { key: 'full', label: 'Colour' },
-      { key: 'tie', label: 'Tie' },
+      { key: 'full', label: 'Color' },
+      { key: 'tie', label: 'Corbata' },
     ],
     piece: 'full',
   },
-  { key: 'hat', label: 'Hat', pickers: [{ key: 'hat', label: 'Colour' }], piece: 'hat' },
-  { key: 'acc', label: 'Accessories', pickers: [], piece: null },
+  { key: 'hat', label: 'Gorro', pickers: [{ key: 'hat', label: 'Color' }], piece: 'hat' },
+  { key: 'acc', label: 'Accesorios', pickers: [], piece: null },
 ];
 
 /** Slots with a tab of their own besides the body: hair and the clothes, each with a category palette. */
@@ -158,13 +158,13 @@ export type LayerDef = PartLayer | EyeLayer;
 
 /** Draw order, bottom to top. */
 export const LAYERS: readonly LayerDef[] = [
-  { kind: 'part', pix: 'body', sel: 'body', color: 'skin', label: 'Body', chip: 0 },
+  { kind: 'part', pix: 'body', sel: 'body', color: 'skin', label: 'Cuerpo', chip: 0 },
   {
     kind: 'part',
     pix: 'under',
     sel: 'body',
     color: 'under',
-    label: 'Under bottom',
+    label: 'Ropa interior (abajo)',
     chip: 6,
     when: 'under',
     neutral: true,
@@ -174,51 +174,58 @@ export const LAYERS: readonly LayerDef[] = [
     pix: 'utop',
     sel: 'body',
     color: 'utop',
-    label: 'Under top',
+    label: 'Ropa interior (arriba)',
     chip: 5,
     when: 'utop',
     neutral: true,
   },
-  { kind: 'eye', pix: 'whites', filedBy: 'body', color: null, label: 'Eyes', chip: 1 }, // whites and pupils, never recoloured
+  { kind: 'eye', pix: 'whites', filedBy: 'body', color: null, label: 'Ojos', chip: 1 }, // whites and pupils, never recoloured
   { kind: 'eye', pix: 'iris', filedBy: 'body', color: 'eyes', label: 'Iris', chip: 2, rows: true },
-  { kind: 'eye', pix: 'lashes', filedBy: 'shape', color: 'lashes', label: 'Lashes', chip: 3 },
-  { kind: 'part', pix: 'pants', sel: 'pants', color: 'pants', label: 'Pants', chip: 10 },
-  { kind: 'part', pix: 'top', sel: 'top', color: 'top', label: 'Top', chip: 8 },
-  { kind: 'part', pix: 'full', sel: 'full', color: 'full', label: 'Outfit', chip: 12 },
-  { kind: 'part', pix: 'tie', sel: 'full', color: 'tie', label: 'Tie', chip: 21 }, // the outfit's tie (tie/<outfit>.png), when it has one
-  { kind: 'part', pix: 'jacket', sel: 'jacket', color: 'jacket', label: 'Jacket', chip: 9 }, // over the top or the outfit
-  { kind: 'part', pix: 'lanyard', sel: 'lanyard', color: 'lanyard', label: 'Lanyard', chip: 15 },
+  { kind: 'eye', pix: 'lashes', filedBy: 'shape', color: 'lashes', label: 'Pestañas', chip: 3 },
+  { kind: 'part', pix: 'pants', sel: 'pants', color: 'pants', label: 'Pantalón', chip: 10 },
+  { kind: 'part', pix: 'top', sel: 'top', color: 'top', label: 'Camiseta', chip: 8 },
+  { kind: 'part', pix: 'full', sel: 'full', color: 'full', label: 'Conjunto', chip: 12 },
+  { kind: 'part', pix: 'tie', sel: 'full', color: 'tie', label: 'Corbata', chip: 21 }, // the outfit's tie (tie/<outfit>.png), when it has one
+  { kind: 'part', pix: 'jacket', sel: 'jacket', color: 'jacket', label: 'Chaqueta', chip: 9 }, // over the top or the outfit
+  {
+    kind: 'part',
+    pix: 'lanyard',
+    sel: 'lanyard',
+    color: 'lanyard',
+    label: 'Acreditación',
+    chip: 15,
+  },
   {
     kind: 'part',
     pix: 'necklace',
     sel: 'necklace',
     color: 'necklace',
-    label: 'Necklace',
+    label: 'Collar',
     chip: 14,
   },
-  { kind: 'part', pix: 'watch', sel: 'watch', color: 'watch', label: 'Wristband', chip: 19 },
-  { kind: 'part', pix: 'shoes', sel: 'shoes', color: 'shoes', label: 'Shoes', chip: 11 },
-  { kind: 'part', pix: 'hair', sel: 'hair', color: 'hair', label: 'Hair', chip: 7 },
+  { kind: 'part', pix: 'watch', sel: 'watch', color: 'watch', label: 'Pulsera', chip: 19 },
+  { kind: 'part', pix: 'shoes', sel: 'shoes', color: 'shoes', label: 'Zapatos', chip: 11 },
+  { kind: 'part', pix: 'hair', sel: 'hair', color: 'hair', label: 'Pelo', chip: 7 },
   {
     kind: 'part',
     pix: 'earrings',
     sel: 'earrings',
     color: 'earrings',
-    label: 'Earrings',
+    label: 'Pendientes',
     chip: 16,
     behind: 'hair', // over the hair, under it from behind
   },
-  { kind: 'part', pix: 'beard', sel: 'beard', color: 'beard', label: 'Beard', chip: 20 }, // over the hair, under sunglasses
-  { kind: 'part', pix: 'shades', sel: 'shades', color: 'shades', label: 'Glasses', chip: 17 },
+  { kind: 'part', pix: 'beard', sel: 'beard', color: 'beard', label: 'Barba', chip: 20 }, // over the hair, under sunglasses
+  { kind: 'part', pix: 'shades', sel: 'shades', color: 'shades', label: 'Gafas', chip: 17 },
   {
     kind: 'part',
     pix: 'hairshades',
     sel: 'hairshades',
     color: 'hairshades',
-    label: 'Shades on hair',
+    label: 'Gafas en el pelo',
     chip: 18,
   },
-  { kind: 'part', pix: 'hat', sel: 'hat', color: 'hat', label: 'Hat', chip: 13 },
+  { kind: 'part', pix: 'hat', sel: 'hat', color: 'hat', label: 'Gorro', chip: 13 },
 ];
 
 export const layerOf = (pix: string): LayerDef => {
@@ -240,7 +247,7 @@ const ACCESSORY_DEFS = [
   { key: 'lanyard' },
   { key: 'earrings' },
   { key: 'shades' },
-  { key: 'hairshades', label: 'Sunglasses on hair' }, // the pixel editor's chip is shorter
+  { key: 'hairshades', label: 'Gafas de sol en el pelo' }, // the pixel editor's chip is shorter
   { key: 'watch', styles: 'Wrist' },
 ] as const satisfies readonly { key: SlotKey; label?: string; styles?: string }[];
 
@@ -273,27 +280,27 @@ export interface EyeShape {
 }
 
 export const EYE_SHAPES: readonly EyeShape[] = [
-  { id: 'plain', label: 'Plain', title: 'Eyes without the lash flick' },
-  { id: 'lashes', label: 'Lashes', title: 'A lash flick at the outer corner of each eye' },
+  { id: 'plain', label: 'Simples', title: 'Ojos sin rabillo' },
+  { id: 'lashes', label: 'Pestañas', title: 'Un rabillo en la esquina exterior de cada ojo' },
   {
     id: 'lidded',
-    label: 'Lidded',
-    title: 'Heavy lids half over the eyes',
+    label: 'Párpados',
+    title: 'Párpados caídos sobre los ojos',
     drawn: true,
     bare: true,
   },
   {
     id: 'stern',
-    label: 'Stern',
-    title: 'Brows drawn low over the eyes',
+    label: 'Serio',
+    title: 'Cejas bajas sobre los ojos',
     drawn: true,
     bare: true,
     blinkLashes: true,
   },
   {
     id: 'closed',
-    label: 'Closed',
-    title: 'Eyes shut, a lid line in the lashes colour',
+    label: 'Cerrados',
+    title: 'Ojos cerrados, con una línea del color de las pestañas',
     drawn: true,
   },
 ];

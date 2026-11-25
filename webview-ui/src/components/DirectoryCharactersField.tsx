@@ -50,7 +50,7 @@ export function DirectoryCharactersField({
   return (
     <div data-testid="directory-characters-field" className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-8">
-        <span className="text-xs text-text-muted">Characters</span>
+        <span className="text-xs text-text-muted">Personajes</span>
         {chosen.length > 0 && (
           <span className="flex gap-4">
             {(['priority', 'random'] as const).map((o) => (
@@ -104,8 +104,8 @@ export function DirectoryCharactersField({
                   order,
                 )
               }
-              aria-label={`Remove ${label(palette)}`}
-              title="Remove"
+              aria-label={`Quitar ${label(palette)}`}
+              title="Quitar"
               className="absolute top-0 right-0 flex p-2 bg-bg border-none rounded-none cursor-pointer leading-none text-text-muted hover:text-text"
             >
               <PixelIcon name="close" scale={1} />
@@ -117,8 +117,8 @@ export function DirectoryCharactersField({
             type="button"
             onClick={() => setIsPicking((open) => !open)}
             aria-expanded={isPicking}
-            aria-label="Add a default character"
-            title="Add a default character"
+            aria-label="Añadir un personaje por defecto"
+            title="Añadir un personaje por defecto"
             className={`shrink-0 w-44 flex items-center justify-center border-2 border-dashed rounded-none cursor-pointer bg-transparent ${
               isPicking
                 ? 'border-accent-bright text-text'
@@ -142,7 +142,7 @@ export function DirectoryCharactersField({
                 onChange([...chosen, palette], order);
                 if (available.length === 1) setIsPicking(false);
               }}
-              aria-label={`Add ${label(palette)}`}
+              aria-label={`Añadir ${label(palette)}`}
               title={label(palette)}
               className="shrink-0 flex p-0 bg-bg-thumb border-2 border-transparent rounded-none cursor-pointer hover:border-border"
             >

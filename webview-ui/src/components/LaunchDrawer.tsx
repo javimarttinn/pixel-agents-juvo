@@ -16,12 +16,12 @@ interface LaunchDrawerProps {
    *  its order) decide. The surface owns the send, because what else a launch
    *  does differs per surface (mobile also slides to the new terminal). */
   onSelect: (directory: Directory, palette?: number) => void;
-  /** Open the Directory modal empty (the pinned `+ Directory` row). */
+  /** Open the Directory modal empty (the pinned `+ Carpeta` row). */
   onAddDirectory: () => void;
   /** Open the Directory modal pre-filled with this entry (user-defined rows). */
   onEditDirectory: (directory: Directory) => void;
   /** The character picked from the roster, when the drawer is asking where
-   *  to launch it: its heading is pinned above `+ Directory`, and rows show
+   *  to launch it: its heading is pinned above `+ Carpeta`, and rows show
    *  only their names (the launch already has its character). */
   pick?: RosterPick;
   className?: string;
@@ -35,7 +35,7 @@ export interface RosterPick {
 
 /**
  * The launch button's drawer: one row per Directory an agent can be launched
- * into, with `+ Directory` pinned above them behind a separator. Opened by a
+ * into, with `+ Carpeta` pinned above them behind a separator. Opened by a
  * plain press of the launch button (and by hover on desktop), and rendered
  * above the button by the shared Dropdown. Every launch goes through a row
  * here — the button itself never launches.
@@ -69,7 +69,7 @@ export function LaunchDrawer({
 }: LaunchDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   // The row whose pencil shows: the pencil hangs outside the drawer's right
-  // border, level with the row. Kept until another row (or `+ Directory`) is
+  // border, level with the row. Kept until another row (or `+ Carpeta`) is
   // hovered, a scroll moves the rows, or the drawer closes — not on leaving
   // the row, so the pointer can travel out to the pencil.
   const [pencilRow, setPencilRow] = useState<{ directory: Directory; row: HTMLElement } | null>(
@@ -120,9 +120,9 @@ export function LaunchDrawer({
     onSelect(directory, pick ? pick.palette : palette);
 
   return (
-    // Open even with no Directories: `+ Directory` is always worth showing, and
+    // Open even with no Directories: `+ Carpeta` is always worth showing, and
     // an office with an empty list is exactly where it's needed most.
-    // fitViewport: a long list must never push `+ Directory` above the top of
+    // fitViewport: a long list must never push `+ Carpeta` above the top of
     // the screen, so the drawer is capped at the room above the button and
     // only the rows scroll. w-max: the panel is positioned against the narrow
     // launch button, so without it the rows would be squeezed to fit that.
@@ -138,7 +138,7 @@ export function LaunchDrawer({
           onMouseEnter={() => setPencilRow(null)}
         >
           <DropdownItem onClick={onAddDirectory} className="text-base text-accent-bright">
-            + Directory
+            + Carpeta
           </DropdownItem>
         </div>
         <div
@@ -175,8 +175,8 @@ export function LaunchDrawer({
         >
           <button
             onClick={() => onEditDirectory(pencil.directory)}
-            aria-label={`Edit ${pencil.directory.name}`}
-            title="Edit directory"
+            aria-label={`Editar ${pencil.directory.name}`}
+            title="Editar carpeta"
             className="flex items-center px-8 bg-bg border-2 border-border rounded-none shadow-pixel cursor-pointer leading-none text-text-muted hover:text-text"
           >
             <PixelIcon name="pencil" />

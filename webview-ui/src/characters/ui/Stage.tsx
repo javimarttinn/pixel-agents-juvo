@@ -129,7 +129,7 @@ function Preview({ anim, facing, scales }: { anim: Anim; facing: Facing; scales:
   return (
     <div className="chv-floor">
       <figure className="chv-hero">
-        <canvas ref={hero} aria-label="Animated preview" />
+        <canvas ref={hero} aria-label="Vista previa animada" />
       </figure>
       <div className="chv-turn">
         {FACINGS.map((dir, i) => (
@@ -248,8 +248,8 @@ function ExportSheet({ fixedScale }: { fixedScale: number | null }) {
           <canvas
             ref={canvas}
             onClick={onClick}
-            aria-label="Sprite sheet that will be exported. Click a frame to edit it."
-            title="Click a frame to edit it pixel by pixel"
+            aria-label="Hoja de sprites que se exportará. Pulsa un fotograma para editarlo."
+            title="Pulsa un fotograma para editarlo píxel a píxel"
           />
           {ROW_NAMES.slice(1).map((name) => (
             <div key={name} className="chv-sheet-row">
@@ -271,17 +271,17 @@ export function Stage({ scales, ref }: { scales: StageScales; ref?: React.Ref<HT
   const [anim, setAnim] = useState<Anim>('walk');
   const [facing, setFacing] = useState<Facing>('down');
   return (
-    <section ref={ref} className="chv-box chv-stage" aria-label="Preview">
+    <section ref={ref} className="chv-box chv-stage" aria-label="Vista previa">
       <div className="chv-pin">
         <div className="chv-stage-top">
-          <Segmented label="Animation" options={ANIMS} value={anim} onChange={setAnim} />
-          <Segmented label="Facing" options={FACINGS} value={facing} onChange={setFacing} />
+          <Segmented label="Animación" options={ANIMS} value={anim} onChange={setAnim} />
+          <Segmented label="Orientación" options={FACINGS} value={facing} onChange={setFacing} />
           {phone && (
             <Button
               variant="ghost"
               size="icon"
               className="chv-close"
-              aria-label="Close characters"
+              aria-label="Cerrar personajes"
               onClick={close}
             >
               <PixelIcon name="close" />

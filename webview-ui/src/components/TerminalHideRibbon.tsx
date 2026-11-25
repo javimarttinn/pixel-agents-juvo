@@ -38,8 +38,8 @@ export function TerminalHideRibbon({ shown, onHide }: TerminalHideRibbonProps) {
       <button
         type="button"
         onClick={onHide}
-        title="Hide terminal"
-        aria-label="Hide terminal"
+        title="Ocultar terminal"
+        aria-label="Ocultar terminal"
         tabIndex={shown ? undefined : -1}
         className="flex items-center justify-center bg-bg text-text-muted hover:text-text border-2 border-r-0 border-border rounded-none cursor-pointer p-0 opacity-60 hover:opacity-100 w-(--ribbon-rest) hover:w-(--ribbon-full) transition-[opacity,width] duration-200 ease-out"
         style={style}

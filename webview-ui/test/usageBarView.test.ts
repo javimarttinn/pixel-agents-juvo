@@ -19,7 +19,7 @@ describe('usageBarView', () => {
       remaining: 0.82,
       level: 'ok',
       percent: '82%',
-      reset: 'resets in 2h 14m',
+      reset: 'se reinicia en 2h 14m',
     });
   });
 
@@ -41,7 +41,7 @@ describe('usageBarView', () => {
       remaining: null,
       level: 'unknown',
       percent: '--',
-      reset: 'no data yet',
+      reset: 'sin datos aún',
     });
   });
 });
@@ -76,13 +76,13 @@ describe('formatDuration', () => {
 
 describe('freshnessLabel', () => {
   it('names the age of the numbers', () => {
-    expect(freshnessLabel(NOW - 10_000, NOW, 'Claude Code')).toBe('Updated just now');
-    expect(freshnessLabel(NOW - 12 * 60_000, NOW, 'Claude Code')).toBe('Updated 12m ago');
+    expect(freshnessLabel(NOW - 10_000, NOW, 'Claude Code')).toBe('Actualizado ahora mismo');
+    expect(freshnessLabel(NOW - 12 * 60_000, NOW, 'Claude Code')).toBe('Actualizado hace 12m');
   });
 
   it('explains where the numbers will come from before any arrive', () => {
     expect(freshnessLabel(undefined, NOW, 'Claude Code')).toBe(
-      'Updates once a Claude Code session replies',
+      'Se actualiza cuando responda una sesión de Claude Code',
     );
   });
 });

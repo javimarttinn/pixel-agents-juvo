@@ -70,6 +70,8 @@ export function createCharacter(
     path: [],
     moveProgress: 0,
     currentTool: null,
+    activeSkill: null,
+    role: null,
     palette,
     repeat,
     frame: 0,

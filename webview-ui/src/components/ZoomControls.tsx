@@ -130,7 +130,7 @@ export function ZoomControls({ zoom, onZoomChange, sidebar }: ZoomControlsProps)
             onClick={() => onZoomChange(zoom + 1)}
             disabled={maxDisabled}
             className="border-border! shadow-pixel disabled:hover:bg-btn-bg disabled:cursor-default disabled:opacity-(--btn-disabled-opacity)"
-            title="Zoom in (Ctrl+Scroll)"
+            title="Acercar (Ctrl+rueda)"
           >
             <PixelIcon name="zoomIn" />
           </Button>
@@ -139,7 +139,7 @@ export function ZoomControls({ zoom, onZoomChange, sidebar }: ZoomControlsProps)
             onClick={() => onZoomChange(zoom - 1)}
             disabled={minDisabled}
             className="border-border! shadow-pixel disabled:hover:bg-btn-bg disabled:cursor-default disabled:opacity-(--btn-disabled-opacity)"
-            title="Zoom out (Ctrl+Scroll)"
+            title="Alejar (Ctrl+rueda)"
           >
             <PixelIcon name="zoomOut" />
           </Button>

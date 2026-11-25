@@ -198,11 +198,11 @@ function RosterCards({
         <button
           type="button"
           onClick={onNew}
-          title="Add a new character"
+          title="Añadir un personaje nuevo"
           className="shrink-0 w-56 flex flex-col items-center justify-center gap-2 py-4 bg-transparent border-2 border-dashed border-border rounded-none cursor-pointer text-sm text-text-muted hover:text-text active:text-text select-none"
         >
           <span className="text-2xl leading-none">+</span>
-          New
+          Nuevo
         </button>
       )}
       {rosterOrder(cast.profiles.length, recent).map((index) => (
@@ -289,7 +289,7 @@ function CharacterCard({ index, profile, renderer, dpr, onPick, onEdit }: Charac
           iOS text selection or the image callout on the canvas. */}
       <button
         type="button"
-        aria-label={`Launch as ${label}`}
+        aria-label={`Lanzar como ${label}`}
         {...longPress.handlers}
         onClick={() => {
           if (!longPress.consumeClick()) onPick(index);
@@ -313,8 +313,8 @@ function CharacterCard({ index, profile, renderer, dpr, onPick, onEdit }: Charac
       <button
         type="button"
         onClick={() => onEdit(index)}
-        aria-label={`Edit ${label}`}
-        title="Edit character"
+        aria-label={`Editar ${label}`}
+        title="Editar personaje"
         className="absolute top-2 right-2 flex items-center justify-center p-2 bg-bg border-none rounded-none cursor-pointer leading-none text-text-muted hover:text-text opacity-0 group-hover:opacity-100 focus-visible:opacity-100 pointer-coarse:hidden"
       >
         <PixelIcon name="pencil" />

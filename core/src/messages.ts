@@ -41,6 +41,7 @@ export type ServerMessage =
   | HooksConsentRequest
   | UsageBridgeStatus
   | UsageLimits
+  | XpState
   | ExternalAssetDirectoriesUpdated
   | AreaMappingsLoaded
   | CardOrderLoaded
@@ -417,6 +418,13 @@ export interface UsageLimits {
 export interface UsageWindow {
   usedPercentage: number;
   resetsAt: number;
+}
+
+export interface XpState {
+  type: 'xpState';
+  lead: number;
+  roles: Record<string, number>;
+  skills: Record<string, number>;
 }
 
 export interface ExternalAssetDirectoriesUpdated {

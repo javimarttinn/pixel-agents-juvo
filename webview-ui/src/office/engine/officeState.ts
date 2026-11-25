@@ -772,15 +772,21 @@ export class OfficeState {
     return true;
   }
 
-  /** Create a sub-agent character with the parent's palette. Returns the sub-agent ID. */
-  addSubagent(parentAgentId: number, parentToolId: string): number {
+  /** Create a sub-agent character: the roster character playing its role when
+   *  one is given (`rolePalette`), else the parent's look. Returns the sub-agent ID. */
+  addSubagent(
+    parentAgentId: number,
+    parentToolId: string,
+    rolePalette: number | null = null,
+    role: string | null = null,
+  ): number {
     const key = `${parentAgentId}:${parentToolId}`;
     if (this.subagentIdMap.has(key)) return this.subagentIdMap.get(key)!;
 
     const id = this.nextSubagentId--;
     const parentCh = this.characters.get(parentAgentId);
-    const palette = parentCh ? parentCh.palette : 0;
-    const repeat = parentCh ? parentCh.repeat : 0;
+    const palette = rolePalette ?? (parentCh ? parentCh.palette : 0);
+    const repeat = rolePalette !== null ? 0 : parentCh ? parentCh.repeat : 0;
 
     // Spawn on the free walkable tile closest to the parent's seat (or to the
     // parent, when it has none) — where the helper will stay.
@@ -793,6 +799,7 @@ export class OfficeState {
     }
 
     const ch = createCharacter(id, palette, null, null, repeat);
+    ch.role = role;
     ch.x = spawn.col * TILE_SIZE + TILE_SIZE / 2;
     ch.y = spawn.row * TILE_SIZE + TILE_SIZE / 2;
     ch.tileCol = spawn.col;
@@ -981,6 +988,14 @@ export class OfficeState {
     const ch = this.characters.get(id);
     if (ch) {
       ch.currentTool = tool;
+    }
+  }
+
+  /** Pin (or clear, with null) the skill badge shown over a character. */
+  setAgentSkill(id: number, skill: string | null): void {
+    const ch = this.characters.get(id);
+    if (ch) {
+      ch.activeSkill = skill;
     }
   }
 

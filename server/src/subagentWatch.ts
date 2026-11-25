@@ -21,16 +21,18 @@ import type * as fs from 'fs';
 
 import { createAgentState } from './agentState.js';
 import { AgentStateStore } from './agentStateStore.js';
+import { SHADOW_AGENT_ID_BASE } from './constants.js';
 import { readNewLines, startFileWatching } from './fileWatcher.js';
 import { pathsMatch } from './pathKey.js';
 import { cancelPermissionTimer, cancelWaitingTimer } from './timerManager.js';
 import type { AgentState } from './types.js';
+import { awardToolXp } from './xp.js';
 
 /** Shadow ids start far above any real agent id. The transcript parser's
  *  module-level callbacks (background detected/completed, team switch) fire
  *  with shadow ids too; the offset guarantees they miss the main store and
  *  no-op instead of touching an unrelated real agent. */
-const SHADOW_ID_BASE = 1_000_000;
+const SHADOW_ID_BASE = SHADOW_AGENT_ID_BASE;
 
 /** A sub-agent transcript adoption request (sidecar-backed, unnamed). */
 export interface SubagentWatchEntry {
@@ -165,6 +167,16 @@ export class SubagentWatch {
           this.liveToolIds.set(shadowId, live);
         }
         live.add(toolId);
+        // The sub-agent's role (from its spawn's status on the lead) earns the XP.
+        awardToolXp(
+          {
+            toolUseId: toolId,
+            toolName: typeof message.toolName === 'string' ? message.toolName : '',
+            status: typeof message.status === 'string' ? message.status : undefined,
+            spawnStatus: this.mainStore.get(leadId)?.activeToolStatuses.get(spawnToolUseId),
+          },
+          (m) => this.mainStore.broadcast({ ...m }),
+        );
         this.mainStore.broadcast({
           type: 'subagentToolStart',
           id: leadId,

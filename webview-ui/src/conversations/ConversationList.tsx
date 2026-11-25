@@ -43,7 +43,7 @@ export interface ConversationSearchScope {
 
 /**
  * The recent conversations, shared by the desktop sidebar and the phone's
- * panel: first the newest across every Directory ("Recent", each with its
+ * panel: first the newest across every Directory ("Recientes", each with its
  * Directory's name), then each Directory's own last conversations under a
  * header that expands and collapses it (one open at a time, collapsed until
  * this viewer opens it; remembered per browser). Titled as the coding agent
@@ -100,15 +100,15 @@ export function ConversationList({
           action={
             onSearch && recent.length > 0 ? (
               <TextButton testId="conversations-see-all" onPress={() => onSearch({})}>
-                See all
+                Ver todo
               </TextButton>
             ) : undefined
           }
         >
-          Recent
+          Recientes
         </SectionHeading>
         {recent.length === 0 ? (
-          <p className="m-0 px-10 py-2 text-xs text-text-muted">No conversations</p>
+          <p className="m-0 px-10 py-2 text-xs text-text-muted">Sin conversaciones</p>
         ) : (
           recent.map(({ conversation, directory }) => (
             <ConversationRow
@@ -123,7 +123,7 @@ export function ConversationList({
           ))
         )}
       </section>
-      <SectionHeading>By Directory</SectionHeading>
+      <SectionHeading>Por carpeta</SectionHeading>
       {list.directories.map((directory) => (
         <DirectorySection
           key={directory.path}
@@ -156,13 +156,13 @@ function SearchField({ onPress, roomy }: { onPress: () => void; roomy: boolean }
         className={`w-full flex items-center gap-6 px-6 ${roomy ? 'py-6' : 'py-3'} bg-bg-dark border-2 border-border rounded-none cursor-text text-left text-sm text-text-muted hover:border-accent`}
       >
         <PixelIcon name="search" scale={1} />
-        Search conversations
+        Buscar conversaciones
       </button>
     </div>
   );
 }
 
-/** A small text-only button (a heading's "See all", a section's "Show 5 more"). */
+/** A small text-only button (a heading's "Ver todo", a section's "Show 5 more"). */
 function TextButton({
   children,
   onPress,
@@ -185,7 +185,7 @@ function TextButton({
 }
 
 /** A group's label: small, muted, uppercase-spaced, above its rows; an
- *  `action` (a "See all") at its other end. */
+ *  `action` (a "Ver todo") at its other end. */
 function SectionHeading({ children, action }: { children: string; action?: ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-8 pl-10 pr-8 pt-10 pb-4">
@@ -273,7 +273,7 @@ function DirectorySection({
         {/* A rule along the bottom: where its drawer ends. */}
         {directory.conversations.length === 0 ? (
           <p className="m-0 px-10 py-4 border-b-2 border-border text-xs text-text-muted">
-            No conversations
+            Sin conversaciones
           </p>
         ) : (
           <div className="py-2 border-b-2 border-border">
@@ -298,7 +298,7 @@ function DirectorySection({
                 )}
                 {onSearch && (
                   <TextButton testId="conversations-directory-search" onPress={onSearch}>
-                    See all
+                    Ver todo
                   </TextButton>
                 )}
               </div>

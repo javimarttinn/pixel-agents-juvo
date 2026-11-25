@@ -238,3 +238,7 @@ export const NEW_CONVERSATION_TITLE = 'New conversation';
 /** Most agent ids a saved card order keeps. The order is pruned to live agents
  *  on every save, so this only bounds a hand-edited or hostile payload. */
 export const MAX_CARD_ORDER_LENGTH = 1_000;
+
+/** Shadow agents (SubagentWatch's watched sub-agent transcripts) take ids from
+ *  here up, far above any real agent id. */
+export const SHADOW_AGENT_ID_BASE = 1_000_000;

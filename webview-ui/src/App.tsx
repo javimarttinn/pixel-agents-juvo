@@ -34,6 +34,7 @@ import { useKeyboardViewport } from './hooks/useKeyboardViewport.js';
 import { useLaunchActions } from './hooks/useLaunchActions.js';
 import { popClass, usePresence } from './hooks/usePresence.js';
 import { useTerminalDrawer } from './hooks/useTerminalDrawer.js';
+import { LevelsModal } from './levels/LevelsModal.js';
 import { MobileMenu, MobileMenuButton } from './mobile/MobileMenu.js';
 import { MobileShell } from './mobile/MobileShell.js';
 import { useMobileMenu } from './mobile/useMobileMenu.js';
@@ -144,6 +145,7 @@ function App() {
 
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isLevelsOpen, setIsLevelsOpen] = useState(false);
   // The Layout editor's panel, kept on screen while it rolls shut.
   const editorPanel = usePresence(editor.isEditMode);
   const sidebar = useConversationSidebar(terminalAvailable, officeReadOnly);
@@ -599,7 +601,7 @@ function App() {
               className="absolute left-1/2 -translate-x-1/2 z-11 bg-accent-bright text-white text-sm py-3 px-8 rounded-none border-2 border-accent shadow-pixel pointer-events-none whitespace-nowrap"
               style={{ top: editor.isDirty ? 64 : 8 }}
             >
-              Rotate (R)
+              Rotar (R)
             </div>
           )}
 
@@ -688,11 +690,10 @@ function App() {
 
       {/* Hooks first-run tooltip. Gated on hooksInstalled (the hooksStatus
           message), NOT the hooksEnabled preference: hooksEnabled defaults true
-          while first-run consent is still pending, and announcing "Instant
-          Detection Active" before anything is installed would be a lie. */}
+          while first-run consent is still pending, and announcing "Detección instantánea activa" before anything is installed would be a lie. */}
       {hooksEnabled && claudeHooksInstalled && !hooksInfoShown && !hooksTooltipDismissed && (
         <Tooltip
-          title="Instant Detection Active"
+          title="Detección instantánea activa"
           position="top-right"
           onDismiss={() => {
             setHooksTooltipDismissed(true);
@@ -700,7 +701,7 @@ function App() {
           }}
         >
           <span className="text-sm text-text leading-none">
-            Your agents now respond in real-time.{' '}
+            Tus agentes ya responden en tiempo real.{' '}
             <span
               className="text-accent cursor-pointer underline"
               onClick={() => {
@@ -709,7 +710,7 @@ function App() {
                 transport.send({ type: 'setHooksInfoShown' });
               }}
             >
-              View more
+              Ver más
             </span>
           </span>
         </Tooltip>
@@ -717,7 +718,7 @@ function App() {
 
       {officeReadOnly && (
         <div className="absolute mobile-safe-top left-1/2 -translate-x-1/2 z-10 text-sm text-text-muted pointer-events-none select-none whitespace-nowrap">
-          View only
+          Solo lectura
         </div>
       )}
 
@@ -740,8 +741,11 @@ function App() {
           terminalAvailable={terminalAvailable}
           terminalUnavailableReason={terminalUnavailableReason}
           onLaunch={launchIntoDirectory}
+          isLevelsOpen={isLevelsOpen}
+          onToggleLevels={() => setIsLevelsOpen((v) => !v)}
         />
       )}
+      <LevelsModal isOpen={isLevelsOpen} onClose={() => setIsLevelsOpen(false)} />
 
       {/* Mobile: the menu button floats top-left; the menu holds the recent
             conversations and Settings (the layout editor stays desktop-only —
@@ -881,26 +885,26 @@ function App() {
       <Modal
         isOpen={isHooksInfoOpen}
         onClose={() => setIsHooksInfoOpen(false)}
-        title="Instant Detection is ON"
+        title="Detección instantánea activada"
         zIndex={52}
       >
         <div className="text-base text-text px-10" style={{ lineHeight: 1.4 }}>
-          <p className="mb-8">Your Pixel Agents office now reacts in real-time:</p>
+          <p className="mb-8">Tu oficina de Pixel Agents ya reacciona en tiempo real:</p>
           <ul className="mb-8 pl-18 list-disc m-0">
-            <li className="text-sm mb-2">Permission prompts appear instantly</li>
-            <li className="text-sm mb-2">Turn completions detected the moment they happen</li>
-            <li className="text-sm mb-2">Sound notifications play immediately</li>
+            <li className="text-sm mb-2">Las peticiones de permiso aparecen al instante</li>
+            <li className="text-sm mb-2">Detecta al momento cuándo termina cada turno</li>
+            <li className="text-sm mb-2">Los avisos sonoros suenan sin retraso</li>
           </ul>
           <p className="mb-12 text-text-muted">
-            This works through Claude Code Hooks, small event listeners that notify Pixel Agents
-            whenever something happens in your Claude sessions.
+            Funciona con los hooks de Claude Code: pequeños escuchadores de eventos que avisan a
+            Pixel Agents cada vez que pasa algo en tus sesiones de Claude.
           </p>
           <div className="text-center">
             <button
               onClick={() => setIsHooksInfoOpen(false)}
               className="py-4 px-20 text-lg bg-accent text-white border-2 border-accent rounded-none cursor-pointer shadow-pixel"
             >
-              Got it
+              Entendido
             </button>
           </div>
           <p className="mt-8 text-xs text-text-muted text-center">
@@ -936,6 +940,7 @@ function App() {
           onClose={menu.close}
           swipeRef={menu.swipe}
           onOpenSettings={() => setIsSettingsOpen(true)}
+          onOpenLevels={() => setIsLevelsOpen(true)}
           showConversations={terminalAvailable}
           onResume={resumeAndFocus}
           onOpenAgent={mobileShell.openAgent}

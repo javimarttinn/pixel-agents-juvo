@@ -79,7 +79,7 @@ export function Modal({
               (changelog, settings) scrolls under it. */}
           <div className="sticky top-0 z-10 bg-bg flex items-center justify-between py-4 px-10 border-b border-border mb-4">
             <span className="text-accent-bright text-2xl">{title}</span>
-            <Button variant="ghost" size="icon" onClick={onClose} title="Close">
+            <Button variant="ghost" size="icon" onClick={onClose} title="Cerrar">
               <PixelIcon name="close" />
             </Button>
           </div>

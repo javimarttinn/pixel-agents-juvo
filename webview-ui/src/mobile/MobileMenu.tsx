@@ -21,6 +21,8 @@ interface MobileMenuProps {
   swipeRef: RefObject<SwipePanel | null>;
   /** Settings, at the menu's foot (closes the menu). */
   onOpenSettings: () => void;
+  /** The Levels panel, beside Settings (closes the menu). */
+  onOpenLevels?: () => void;
   /** Whether to list conversations (resuming needs a terminal). */
   showConversations: boolean;
   /** A conversation pressed: resume it (the shell then slides to its terminal). */
@@ -50,6 +52,7 @@ export function MobileMenu({
   onClose,
   swipeRef,
   onOpenSettings,
+  onOpenLevels,
   showConversations,
   onResume,
   onOpenAgent,
@@ -98,17 +101,17 @@ export function MobileMenu({
       />
       <aside
         ref={panelRef}
-        aria-label="Menu"
+        aria-label="Menú"
         data-testid="mobile-menu"
         className={`absolute top-0 bottom-0 left-0 flex flex-col bg-bg border-r-2 border-border shadow-pixel transition-transform duration-200 ${open ? 'translate-x-0' : '-translate-x-full'}`}
         style={{ width: MOBILE_CONVERSATIONS_WIDTH, paddingTop: 'env(safe-area-inset-top, 0px)' }}
       >
         <div className="flex items-center justify-between pl-10 pr-4 py-6 border-b-2 border-border">
-          <span className="text-base">{showConversations ? 'Conversations' : 'Menu'}</span>
+          <span className="text-base">{showConversations ? 'Conversations' : 'Menú'}</span>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close menu"
+            aria-label="Cerrar menú"
             className="flex items-center justify-center w-32 h-32 bg-transparent border-none rounded-none cursor-pointer text-text-muted"
           >
             <PixelIcon name="close" />
@@ -132,7 +135,20 @@ export function MobileMenu({
         ) : (
           <div className="flex-1" />
         )}
-        <div className="p-8 border-t-2 border-border">
+        <div className="p-8 border-t-2 border-border flex flex-col gap-6">
+          {onOpenLevels && (
+            <Button
+              size="md"
+              icon="trophy"
+              className="w-full"
+              onClick={() => {
+                onClose();
+                onOpenLevels();
+              }}
+            >
+              Niveles
+            </Button>
+          )}
           <Button
             size="md"
             icon="settings"
@@ -142,7 +158,7 @@ export function MobileMenu({
               onOpenSettings();
             }}
           >
-            Settings
+            Ajustes
           </Button>
         </div>
       </aside>
@@ -203,8 +219,8 @@ export function MobileMenuButton({ active, onClick }: { active: boolean; onClick
         variant={active ? 'active' : 'default'}
         className="border-border! shadow-pixel"
         onClick={onClick}
-        aria-label="Menu"
-        title="Menu"
+        aria-label="Menú"
+        title="Menú"
       >
         <PixelIcon name="menu" />
       </Button>

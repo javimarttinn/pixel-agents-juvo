@@ -29,8 +29,8 @@ interface ConversationSearchProps {
 }
 
 /**
- * Every conversation, newest first, searched by title: "See all" and the
- * sidebar's search field open it, a Directory's "See all" opens it on that
+ * Every conversation, newest first, searched by title: "Ver todo" and the
+ * sidebar's search field open it, a Directory's "Ver todo" opens it on that
  * Directory alone (a chip to drop, to search everywhere). The server does the
  * searching (the office only holds what the sidebar shows); results come a
  * page at a time, the next asked for as the list scrolls near its end.
@@ -42,7 +42,7 @@ export function ConversationSearch(props: ConversationSearchProps) {
     <Modal
       isOpen={scope !== null}
       onClose={onClose}
-      title="Conversations"
+      title="Conversaciones"
       zIndex={zIndex}
       className="w-[min(520px,100%)]"
     >
@@ -149,7 +149,7 @@ function SearchBody({
               setDirectory(null);
               setLimit(CONVERSATION_SEARCH_PAGE);
             }}
-            title="Search every Directory"
+            title="Buscar en todas las carpetas"
             className="flex items-center gap-6 max-w-full py-1 px-6 bg-active-bg border-2 border-accent rounded-none cursor-pointer text-2xs text-text"
           >
             <span className="min-w-0 truncate">{directory.directoryName}</span>
@@ -186,7 +186,7 @@ function SearchBody({
                 : 'No conversations yet.'}
           </p>
         )}
-        {loadingMore && <p className="m-0 px-10 py-8 text-sm text-text-muted">Loading more…</p>}
+        {loadingMore && <p className="m-0 px-10 py-8 text-sm text-text-muted">Cargando más…</p>}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ const debug = process.env.PIXEL_AGENTS_DEBUG !== '0';
 import type { HookProvider } from '../../core/src/provider.js';
 import type { AgentStateStore } from './agentStateStore.js';
 import { launchSpawn, readCompletionNotices } from './backgroundSpawns.js';
-import { TEXT_IDLE_DELAY_MS, TOOL_DONE_DELAY_MS } from './constants.js';
+import { SHADOW_AGENT_ID_BASE, TEXT_IDLE_DELAY_MS, TOOL_DONE_DELAY_MS } from './constants.js';
 import { updateContextUsage } from './contextUsage.js';
 import { hasInlineTeammates, hasPromotedBackgroundAgent } from './teamUtils.js';
 import {
@@ -14,6 +14,7 @@ import {
   startWaitingTimer,
 } from './timerManager.js';
 import type { AgentState } from './types.js';
+import { awardToolXp } from './xp.js';
 
 /** Empty set used as safe fallback when no HookProvider is registered. */
 const EMPTY_EXEMPT_TOOLS: ReadonlySet<string> = new Set();
@@ -113,7 +114,7 @@ export function setTeamSwitchCallback(
 /** Format a tool status line. Delegates to the active HookProvider's formatToolStatus.
  *  Invariant: a provider is registered before any transcript lines are parsed. */
 export function formatToolStatus(toolName: string, input: Record<string, unknown>): string {
-  return hookProvider?.formatToolStatus(toolName, input) ?? `Using ${toolName}`;
+  return hookProvider?.formatToolStatus(toolName, input) ?? `Usando ${toolName}`;
 }
 
 export function processTranscriptLine(
@@ -193,6 +194,13 @@ export function processTranscriptLine(
             agent.activeToolIds.add(block.id);
             agent.activeToolStatuses.set(block.id, status);
             agent.activeToolNames.set(block.id, toolName);
+            // Watched sub-agents run here too, under shadow ids: SubagentWatch
+            // credits their role instead (it knows the spawn they belong to).
+            if (agentId < SHADOW_AGENT_ID_BASE) {
+              awardToolXp({ toolUseId: block.id, toolName, input: block.input }, (m) =>
+                agents.broadcast({ ...m }),
+              );
+            }
             if (!exemptTools().has(toolName)) {
               hasNonExemptTool = true;
             }
@@ -594,6 +602,15 @@ function processProgressRecord(
         const status = formatToolStatus(toolName, block.input || {});
         console.log(
           `[Pixel Agents] Agent ${agentId} subagent tool start: ${block.id} ${status} (parent: ${parentToolId})`,
+        );
+        awardToolXp(
+          {
+            toolUseId: block.id,
+            toolName,
+            input: block.input,
+            spawnStatus: agent.activeToolStatuses.get(parentToolId),
+          },
+          (m) => agents.broadcast({ ...m }),
         );
 
         // Track sub-tool IDs

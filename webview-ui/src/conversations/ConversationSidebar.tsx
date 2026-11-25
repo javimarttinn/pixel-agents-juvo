@@ -52,7 +52,7 @@ export function ConversationSidebar({
       onTransitionEnd={onPanelTransitionEnd}
     >
       <aside
-        aria-label="Recent conversations"
+        aria-label="Conversaciones recientes"
         data-testid="conversation-sidebar"
         className="h-full shrink-0 flex flex-col"
         style={{
@@ -78,7 +78,7 @@ export function ConversationSidebar({
             className={`w-full text-left ${isSettingsOpen ? '' : 'text-text! hover:bg-btn-hover'}`}
             onClick={onToggleSettings}
           >
-            Settings
+            Ajustes
           </Button>
         </div>
       </aside>

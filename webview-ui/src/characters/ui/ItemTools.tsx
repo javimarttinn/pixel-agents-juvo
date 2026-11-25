@@ -101,13 +101,13 @@ function ItemSection(props: {
   const [name, setName] = useState(props.defaultName);
   return (
     <div className="chv-ed-item">
-      <h3>Item</h3>
+      <h3>Prenda</h3>
       <div className="chv-toolrow">
         <button type="button" className="chv-tool" onClick={() => void props.onExport()}>
-          Export PNG
+          Exportar PNG
         </button>
         <button type="button" className="chv-tool" onClick={props.onImport}>
-          Import PNG
+          Importar PNG
         </button>
       </div>
       {props.canSaveItem && (
@@ -121,12 +121,12 @@ function ItemSection(props: {
           <input
             value={name}
             maxLength={64}
-            aria-label="New item name"
-            placeholder="Item name"
+            aria-label="Nombre de la prenda nueva"
+            placeholder="Nombre de la prenda"
             onChange={(e) => setName(e.target.value)}
           />
           <button type="submit" className="chv-tool" disabled={!name.trim()}>
-            Save as new item
+            Guardar como prenda nueva
           </button>
         </form>
       )}

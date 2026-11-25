@@ -65,7 +65,7 @@ export function AgentCard({
     <div
       className={`group relative pointer-events-auto flex items-stretch gap-1 p-1 cursor-pointer border-2 shrink-0 ${CARD_VARIANT[variant]}`}
       onClick={() => onSelect(agentId)}
-      title={`Agent ${agentId}`}
+      title={`Agente ${agentId}`}
     >
       <CharacterMugShot
         palette={appearance.palette}
@@ -83,7 +83,7 @@ export function AgentCard({
             e.stopPropagation();
             onClose(agentId);
           }}
-          title="Close agent"
+          title="Cerrar agente"
           className={CLOSE_MODE[close]}
         >
           {/* The × is drawn a pixel left of its grid's centre: nudged right,
@@ -106,7 +106,7 @@ export function AgentCard({
           used={contextUsed}
           height={CARD_CONTEXT_BAR_HEIGHT_PX}
           className="absolute left-0 right-0 bottom-0 pointer-events-none"
-          title={`${Math.round(contextLeft(contextUsed) * 100)}% context left`}
+          title={`${Math.round(contextLeft(contextUsed) * 100)}% de contexto libre`}
           testId="card-context-bar"
         />
       )}

@@ -9,6 +9,7 @@
  */
 
 import * as path from 'path';
+import { renderUnicodeCompact } from 'uqr';
 
 import { AgentRuntime } from './agentRuntime.js';
 import { AgentStateStore } from './agentStateStore.js';
@@ -68,6 +69,9 @@ export interface CliArgs {
   allowedHosts: string[];
   /** --rotate-token: replace the persisted server token before starting. */
   rotateToken: boolean;
+  /** --qr: print a QR code of the phone URL (the first --allowed-host over
+   *  HTTPS, as Tailscale Serve exposes it; else the printed local URL). */
+  qr: boolean;
   /** --pty-host (development only): keep the agents' terminals in a separate
    *  long-lived process, so restarting the server doesn't end them. */
   ptyHost: boolean;
@@ -86,6 +90,7 @@ export function parseArgs(argv: string[]): CliArgs {
     terminal: true,
     allowedHosts: [],
     rotateToken: false,
+    qr: false,
     ptyHost: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -121,6 +126,8 @@ export function parseArgs(argv: string[]): CliArgs {
       i++;
     } else if (argv[i] === '--rotate-token') {
       args.rotateToken = true;
+    } else if (argv[i] === '--qr') {
+      args.qr = true;
     } else if (argv[i] === '--no-terminal') {
       args.terminal = false;
     } else if (argv[i] === '--pty-host') {
@@ -142,6 +149,9 @@ Options:
                         it, only localhost and a specific --host are privileged
   --rotate-token        Replace the server token. Every URL that carried the
                         old one (bookmarks, other devices) stops working
+  --qr                  Print a QR code to open the office on your phone: the
+                        first --allowed-host over HTTPS (Tailscale Serve), else
+                        the local URL
   --no-terminal         Disable the embedded terminal (watch agents only; no
                         launching or attaching from the browser)
   --pty-host            Development only: run agents' terminals in a separate
@@ -480,7 +490,7 @@ async function main(): Promise<void> {
       // Without this line, a persisted hooks-off makes startup skip the entire
       // consent/install flow with zero output — indistinguishable from a bug.
       console.log(
-        '[Pixel Agents] Hooks disabled — enable "Instant Detection (Hooks)" in the UI settings to install them.',
+        '[Pixel Agents] Hooks desactivados: activa "Detección instantánea (hooks)" en Ajustes para instalarlos.',
       );
     }
 
@@ -505,15 +515,23 @@ async function main(): Promise<void> {
     const displayHost =
       args.host === '0.0.0.0' || args.host === '::' || args.host === '' ? '127.0.0.1' : args.host;
     console.log(
-      `\n  Pixel Agents server running at http://${displayHost}:${config.port}/?token=${config.token}\n`,
+      `\n  Oficina de Pixel Agents en http://${displayHost}:${config.port}/?token=${config.token}\n`,
     );
+    if (args.qr) {
+      const phoneUrl = args.allowedHosts[0]
+        ? `https://${args.allowedHosts[0]}/?token=${config.token}`
+        : `http://${displayHost}:${config.port}/?token=${config.token}`;
+      console.log(`  Escanéalo con el móvil (${phoneUrl.replace(/\?token=.*/, '?token=…')}):\n`);
+      console.log(renderUnicodeCompact(phoneUrl, { border: 2 }));
+      console.log('  Trata este QR como una contraseña: da acceso completo a tu oficina.\n');
+    }
 
     // ── Graceful shutdown ──
     let shuttingDown = false;
     async function shutdown(): Promise<void> {
       if (shuttingDown) return;
       shuttingDown = true;
-      console.log('\nShutting down...');
+      console.log('\nCerrando...');
       // In process: kill child terminals and wait for them (each exit closes
       // its agent): exiting now would cancel the SIGKILL escalation and leave
       // a child that ignores SIGHUP orphaned on a dead server. With the PTY

@@ -2,8 +2,10 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
+import { SKILL_STATUS_PREFIX } from '../../../../../core/src/constants.js';
 import { normalizeProjectPath } from '../../../../../core/src/normalizeProjectPath.js';
 import type { AgentEvent, HookProvider } from '../../../../../core/src/provider.js';
+import { formatSubtaskStatus } from '../../../../../core/src/subtaskStatus.js';
 import {
   BASH_COMMAND_DISPLAY_MAX_LENGTH,
   TASK_DESCRIPTION_DISPLAY_MAX_LENGTH,
@@ -33,46 +35,55 @@ export function formatToolStatus(toolName: string, input?: unknown): string {
   const base = (p: unknown) => (typeof p === 'string' ? path.basename(p) : '');
   switch (toolName) {
     case 'Read':
-      return `Reading ${base(inp.file_path)}`;
+      return `Leyendo ${base(inp.file_path)}`;
     case 'Edit':
-      return `Editing ${base(inp.file_path)}`;
+      return `Editando ${base(inp.file_path)}`;
     case 'Write':
-      return `Writing ${base(inp.file_path)}`;
+      return `Escribiendo ${base(inp.file_path)}`;
     case 'Bash': {
       const cmd = (inp.command as string) || '';
-      return `Running: ${cmd.length > BASH_COMMAND_DISPLAY_MAX_LENGTH ? cmd.slice(0, BASH_COMMAND_DISPLAY_MAX_LENGTH) + '\u2026' : cmd}`;
+      return `Ejecutando: ${cmd.length > BASH_COMMAND_DISPLAY_MAX_LENGTH ? cmd.slice(0, BASH_COMMAND_DISPLAY_MAX_LENGTH) + '\u2026' : cmd}`;
     }
     case 'Glob':
-      return 'Searching files';
+      return 'Buscando archivos';
     case 'Grep':
-      return 'Searching code';
+      return 'Buscando en el código';
     case 'WebFetch':
-      return 'Fetching web content';
+      return 'Consultando una web';
     case 'WebSearch':
-      return 'Searching the web';
+      return 'Buscando en la web';
     case 'Task':
     case 'Agent': {
       const desc = typeof inp.description === 'string' ? inp.description : '';
-      return desc
-        ? `Subtask: ${desc.length > TASK_DESCRIPTION_DISPLAY_MAX_LENGTH ? desc.slice(0, TASK_DESCRIPTION_DISPLAY_MAX_LENGTH) + '\u2026' : desc}`
-        : 'Running subtask';
+      const role = typeof inp.subagent_type === 'string' ? inp.subagent_type : undefined;
+      const shown =
+        desc.length > TASK_DESCRIPTION_DISPLAY_MAX_LENGTH
+          ? desc.slice(0, TASK_DESCRIPTION_DISPLAY_MAX_LENGTH) + '\u2026'
+          : desc;
+      return desc || role ? formatSubtaskStatus(shown, role) : 'Ejecutando subtarea';
+    }
+    case 'Skill': {
+      // `skill` is the documented field; older builds used `command`/`name`.
+      const raw = inp.skill ?? inp.command ?? inp.name;
+      const name = typeof raw === 'string' ? raw.replace(/^\//, '').split(':').pop() || '' : '';
+      return name ? `${SKILL_STATUS_PREFIX}${name}` : 'Skill';
     }
     case 'AskUserQuestion':
-      return 'Waiting for your answer';
+      return 'Esperando tu respuesta';
     case 'EnterPlanMode':
-      return 'Planning';
+      return 'Planificando';
     case 'NotebookEdit':
-      return 'Editing notebook';
+      return 'Editando notebook';
     case 'TeamCreate': {
       const teamName = typeof inp.team_name === 'string' ? inp.team_name : '';
-      return teamName ? `Creating team: ${teamName}` : 'Creating team';
+      return teamName ? `Creando equipo: ${teamName}` : 'Creando equipo';
     }
     case 'SendMessage': {
       const recipient = typeof inp.recipient === 'string' ? inp.recipient : '';
-      return recipient ? `-> ${recipient}` : 'Sending message';
+      return recipient ? `-> ${recipient}` : 'Enviando mensaje';
     }
     default:
-      return `Using ${toolName}`;
+      return `Usando ${toolName}`;
   }
 }
 

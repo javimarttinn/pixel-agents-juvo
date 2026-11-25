@@ -277,22 +277,34 @@ describe('claudeProvider', () => {
   describe('formatToolStatus', () => {
     it('formats Read', () => {
       expect(claudeProvider.formatToolStatus('Read', { file_path: '/a/b.ts' })).toBe(
-        'Reading b.ts',
+        'Leyendo b.ts',
       );
     });
     it('formats Task/Agent with description', () => {
       expect(claudeProvider.formatToolStatus('Task', { description: 'Code review' })).toBe(
-        'Subtask: Code review',
+        'Subtarea: Code review',
       );
       expect(claudeProvider.formatToolStatus('Agent', { description: 'Research' })).toBe(
-        'Subtask: Research',
+        'Subtarea: Research',
       );
     });
-    it('falls back to "Using X" for unknown tools', () => {
-      expect(claudeProvider.formatToolStatus('FancyTool', {})).toBe('Using FancyTool');
+    it('formats Skill with its name, dropping a plugin prefix and a slash', () => {
+      expect(claudeProvider.formatToolStatus('Skill', { skill: 'spec-mvp' })).toBe(
+        'Skill: spec-mvp',
+      );
+      expect(claudeProvider.formatToolStatus('Skill', { skill: 'design:ux-copy' })).toBe(
+        'Skill: ux-copy',
+      );
+      expect(claudeProvider.formatToolStatus('Skill', { command: '/pre-deploy' })).toBe(
+        'Skill: pre-deploy',
+      );
+      expect(claudeProvider.formatToolStatus('Skill', {})).toBe('Skill');
+    });
+    it('falls back to "Usando X" for unknown tools', () => {
+      expect(claudeProvider.formatToolStatus('FancyTool', {})).toBe('Usando FancyTool');
     });
     it('handles undefined input', () => {
-      expect(claudeProvider.formatToolStatus('Read', undefined)).toBe('Reading ');
+      expect(claudeProvider.formatToolStatus('Read', undefined)).toBe('Leyendo ');
     });
   });
 });

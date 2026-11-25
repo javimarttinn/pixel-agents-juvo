@@ -32,6 +32,9 @@ interface BottomToolbarProps {
   /** A Directory picked from the + drawer: launch into it (wearing `palette`
    *  when a character was picked first). */
   onLaunch: (directory: Directory, palette?: number) => void;
+  /** The Levels panel is open (the button shows active). */
+  isLevelsOpen: boolean;
+  onToggleLevels: () => void;
 }
 
 /** Every toolbar button's height: the labelled ones' natural height (26 px
@@ -55,6 +58,8 @@ export function BottomToolbar({
   terminalAvailable,
   terminalUnavailableReason,
   onLaunch,
+  isLevelsOpen,
+  onToggleLevels,
 }: BottomToolbarProps) {
   // Standalone can launch agents whenever the server has a working PTY. When it
   // doesn't, show the button disabled with the reason rather than hiding it —
@@ -143,7 +148,7 @@ export function BottomToolbar({
               type="button"
               disabled
               title={terminalUnavailableReason ?? 'Terminal unavailable on this server.'}
-              aria-label="New agent"
+              aria-label="Nuevo agente"
               className={`${LAUNCH_SQUARE} bg-btn-bg border-border text-text-muted cursor-default opacity-(--btn-disabled-opacity)`}
             >
               <PixelIcon name="plus" />
@@ -161,8 +166,8 @@ export function BottomToolbar({
               <button
                 type="button"
                 onClick={drawerHover.press}
-                aria-label="New agent"
-                title="Launch agent"
+                aria-label="Nuevo agente"
+                title="Lanzar agente"
                 className={`${LAUNCH_SQUARE} press-juice border-accent text-white cursor-pointer ${isDrawerOpen ? 'bg-accent-bright' : 'bg-accent hover:bg-accent-bright'}`}
               >
                 {/* A quarter turn while its drawer is open (a + looks the
@@ -195,7 +200,7 @@ export function BottomToolbar({
             onClick={rosterHover.press}
             onMouseEnter={rosterHover.enter}
             onMouseLeave={rosterHover.leave}
-            aria-label="Roster"
+            aria-label="Plantilla"
             aria-expanded={menus.isRosterOpen}
             title={
               menus.isRosterOpen
@@ -218,23 +223,32 @@ export function BottomToolbar({
           </button>
         </div>
         <Button
+          variant={isLevelsOpen ? 'active' : 'default'}
+          onClick={onToggleLevels}
+          title="Niveles de agentes, roles y skills"
+          className={`${ROW_HEIGHT} press-juice`}
+          icon="trophy"
+        >
+          Niveles
+        </Button>
+        <Button
           variant={isEditMode ? 'active' : 'default'}
           onClick={onToggleEditMode}
-          title="Edit office layout"
+          title="Editar la oficina"
           className={`${ROW_HEIGHT} press-juice`}
           icon="layout"
         >
-          Layout
+          Oficina
         </Button>
         {showSettings && (
           <Button
             variant={isSettingsOpen ? 'active' : 'default'}
             onClick={onToggleSettings}
-            title="Settings"
+            title="Ajustes"
             className={`${ROW_HEIGHT} press-juice`}
             icon="settings"
           >
-            Settings
+            Ajustes
           </Button>
         )}
       </div>

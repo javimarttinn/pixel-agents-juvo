@@ -40,24 +40,24 @@ import { ViewButton } from './ViewButton.js';
 const FRAME_VIEW: SpriteView = { kind: 'frame', facing: 'down', frame: 0 };
 
 const TOOLS: { id: EditorTool; label: string; short: string; key: string; help: string }[] = [
-  { id: 'pencil', label: 'Pencil', short: 'Pencil', key: 'B', help: 'Paint pixels of this piece.' },
+  { id: 'pencil', label: 'Lápiz', short: 'Lápiz', key: 'B', help: 'Paint pixels of this piece.' },
   {
     id: 'eraser',
-    label: 'Eraser',
-    short: 'Eraser',
+    label: 'Goma',
+    short: 'Goma',
     key: 'E',
     help: 'Remove this piece’s pixels so whatever is underneath shows.',
   },
   {
     id: 'restore',
-    label: 'Restore',
-    short: 'Restore',
+    label: 'Restaurar',
+    short: 'Restaurar',
     key: 'R',
     help: 'Put pixels back to the generated piece.',
   },
   {
     id: 'picker',
-    label: 'Pick colour',
+    label: 'Elegir color',
     short: 'Pick',
     key: 'I',
     help: 'Click one of this piece’s pixels to paint with its colour.',
@@ -274,22 +274,23 @@ export function PixelEditor() {
         <div>
           <h2>Edit {pieceLabel}</h2>
           <div className="chv-ed-frame">
-            Frame <b>{FRAME_NAMES[ed.frame % FRAMES_PER_ROW]}</b> · facing <b>{ROW_NAMES[row]}</b>
+            Fotograma <b>{FRAME_NAMES[ed.frame % FRAMES_PER_ROW]}</b> · facing{' '}
+            <b>{ROW_NAMES[row]}</b>
           </div>
         </div>
         {phone ? (
-          <ViewButton title="Back to the sheet" onClick={closeEditor}>
+          <ViewButton title="Volver a la hoja" onClick={closeEditor}>
             <PixelIcon name="prev" />
-            Sheet
+            Hoja
           </ViewButton>
         ) : (
           <ViewButton primary onClick={closeEditor}>
-            Done
+            Hecho
           </ViewButton>
         )}
       </div>
 
-      <div className="chv-chips" role="group" aria-label="Piece to edit">
+      <div className="chv-chips" role="group" aria-label="Pieza a editar">
         {worn.map((piece) => (
           <button
             key={piece.pix}
@@ -321,7 +322,7 @@ export function PixelEditor() {
             <canvas
               ref={overlay}
               className="chv-ed-overlay"
-              aria-label="Frame being edited"
+              aria-label="Fotograma en edición"
               onPointerDown={(e) => {
                 const p = pixelAt(e);
                 if (!p) return;
@@ -366,7 +367,7 @@ export function PixelEditor() {
         </div>
 
         <div className="chv-ed-tools">
-          <div className="chv-toolrow" role="group" aria-label="Tool">
+          <div className="chv-toolrow" role="group" aria-label="Herramienta">
             {TOOLS.map((t) => (
               <button
                 key={t.id}
@@ -386,7 +387,7 @@ export function PixelEditor() {
             <span className="chv-sw" style={{ background: shown(color) }} />
             <span>Painting with {shown(color)}</span>
             <label className="chv-custom">
-              Custom
+              Personalizado
               <input
                 type="color"
                 value={color}
@@ -394,7 +395,7 @@ export function PixelEditor() {
               />
             </label>
           </div>
-          <div className="chv-ed-palette" aria-label="This piece’s colours">
+          <div className="chv-ed-palette" aria-label="Colores de esta pieza">
             {palette.map((hex) => (
               <button
                 key={hex}
@@ -402,7 +403,7 @@ export function PixelEditor() {
                 className="chv-sw"
                 style={{ background: shown(hex) }}
                 title={shown(hex)}
-                aria-label={`Paint with ${shown(hex)}`}
+                aria-label={`Pintar con ${shown(hex)}`}
                 aria-pressed={hex === color}
                 onClick={() => setEditor({ color: hex, tool: 'pencil' })}
               />
@@ -435,11 +436,11 @@ export function PixelEditor() {
           <div className="chv-toolrow">
             <button type="button" className="chv-tool" disabled={!cast.canUndo} onClick={undo}>
               <PixelIcon name="undo" />
-              Undo<kbd>⌘Z</kbd>
+              Deshacer<kbd>⌘Z</kbd>
             </button>
             <button type="button" className="chv-tool" disabled={!cast.canRedo} onClick={redo}>
               <PixelIcon name="redo" />
-              Redo<kbd>⇧⌘Z</kbd>
+              Rehacer<kbd>⇧⌘Z</kbd>
             </button>
           </div>
           <div className="chv-toolrow">

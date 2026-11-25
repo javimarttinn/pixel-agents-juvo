@@ -75,7 +75,7 @@ export function TerminalDrawer({
             className="absolute top-0 left-0 bottom-0 z-40 cursor-col-resize hover:bg-accent"
             style={{ width: TERMINAL_DRAWER_RESIZE_HANDLE_PX }}
             onMouseDown={onResizeStart}
-            title="Drag to resize"
+            title="Arrastra para cambiar el tamaño"
           />
 
           <div className="relative flex-1 min-h-0 p-4">

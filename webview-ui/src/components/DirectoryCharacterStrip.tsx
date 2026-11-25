@@ -76,8 +76,8 @@ export function DirectoryCharacterStrip({ directory, onPick }: DirectoryCharacte
               e.stopPropagation();
               onPick(palette);
             }}
-            aria-label={`Launch as ${label} in ${directory.name}`}
-            title={`Launch as ${label}`}
+            aria-label={`Lanzar como ${label} en ${directory.name}`}
+            title={`Lanzar como ${label}`}
             className="flex p-0 bg-transparent border-none rounded-none cursor-pointer hover:-translate-y-1 focus-visible:-translate-y-1"
           >
             <CharacterMugShot palette={palette} repeat={0} zoom={1} />
@@ -92,8 +92,8 @@ export function DirectoryCharacterStrip({ directory, onPick }: DirectoryCharacte
             e.stopPropagation();
             setExpanded(true);
           }}
-          aria-label={`Show all ${all.length} characters of ${directory.name}`}
-          title="Show all"
+          aria-label={`Ver los ${all.length} personajes de ${directory.name}`}
+          title="Ver todos"
           className="flex p-0 bg-transparent border-none rounded-none cursor-pointer hover:-translate-y-1 focus-visible:-translate-y-1"
         >
           <SilhouetteMugShot />

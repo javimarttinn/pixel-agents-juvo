@@ -192,6 +192,10 @@ export interface Character extends Blinker {
   moveProgress: number;
   /** Current tool name for typing vs reading animation, or null */
   currentTool: string | null;
+  /** The skill this agent loaded in its current turn (badge over its head), or null */
+  activeSkill: string | null;
+  /** A sub-agent's role (its sub-agent type, e.g. "reviewer"), or null */
+  role: string | null;
   /** Palette index (0-5) */
   palette: number;
   /** Which copy of its character this is (0 = the first, n = its nth repeat,

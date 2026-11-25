@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { Directory, HooksConsentRequest } from '../../../core/src/messages.js';
+import { nameMatchesRole, parseSubtaskStatus } from '../../../core/src/subtaskStatus.js';
 import { handleCastMessage } from '../characters/castMessages.js';
 import { castStore } from '../characters/castStore.js';
 import { startOfficeSync } from '../characters/officeSprites.js';
 import { cardOrderOf } from '../components/cardBar.js';
+import { handleXpMessage } from '../levels/xpStore.js';
 import { playDoneSound, playPermissionSound, setSoundEnabled } from '../notificationSound.js';
 import { clearAgentContextUsed, setAgentContextUsed } from '../office/contextGauge.js';
 import type { ExistingAgentMeta, PendingAgent } from '../office/engine/existingAgents.js';
@@ -24,6 +26,7 @@ import {
   extractToolName,
   isSubagentToolName,
   setProviderCapabilities,
+  skillNameFromStatus,
 } from '../office/toolUtils.js';
 import type { OfficeLayout, ToolActivity } from '../office/types.js';
 import { setWallSprites } from '../office/wallTiles.js';
@@ -42,6 +45,14 @@ import { handleUsageMessage } from '../usage/usageStore.js';
  */
 const isHeadlessAgent = (isExternal: boolean | undefined): boolean =>
   isExternal === true && !isBrowserRuntime;
+
+/** The roster index of the character named for a sub-agent's role (e.g. a
+ *  character called "Reviewer" plays every `reviewer` sub-agent), or null. */
+function rolePalette(role: string | null): number | null {
+  if (!role) return null;
+  const i = castStore.getState().profiles.findIndex((p) => nameMatchesRole(p.name, role));
+  return i >= 0 ? i : null;
+}
 
 export interface SubagentCharacter {
   id: number;
@@ -320,6 +331,7 @@ export function useExtensionMessages(
       backgroundParentToolIdsRef.current = {};
       for (const id of incoming) {
         os.setAgentTool(id, null);
+        os.setAgentSkill(id, null);
         os.setAgentActive(id, false);
       }
     };
@@ -350,6 +362,7 @@ export function useExtensionMessages(
 
       // Usage bars (usage/usageStore.ts): the bridge's state and the plan usage.
       if (handleUsageMessage(msg)) return;
+      if (handleXpMessage(msg)) return;
       // The cast (characters/castMessages.ts): profiles, items, looks, external sprites.
       if (handleCastMessage(msg, os)) return;
 
@@ -526,6 +539,9 @@ export function useExtensionMessages(
         });
         const toolName = (msg.toolName as string | undefined) ?? extractToolName(status);
         os.setAgentTool(id, toolName);
+        // A skill shapes the whole turn: keep its badge up until the turn ends.
+        const skill = skillNameFromStatus(status);
+        if (skill) os.setAgentSkill(id, skill);
         os.setAgentActive(id, true);
         // Don't clear the permission bubble if the hook already confirmed permission is needed
         if (!permissionActive) {
@@ -554,8 +570,14 @@ export function useExtensionMessages(
           !isTeammateSpawn &&
           (!runInBackground || !parentHasTeam)
         ) {
-          const label = status.startsWith('Subtask:') ? status.slice('Subtask:'.length).trim() : '';
-          const subId = os.addSubagent(id, toolId);
+          const spawn = parseSubtaskStatus(status);
+          const label = spawn?.label ?? '';
+          const subId = os.addSubagent(
+            id,
+            toolId,
+            rolePalette(spawn?.role ?? null),
+            spawn?.role ?? null,
+          );
           setSubagentCharacters((prev) => {
             if (prev.some((s) => s.id === subId)) return prev;
             return [...prev, { id: subId, parentAgentId: id, parentToolId: toolId, label }];
@@ -630,6 +652,7 @@ export function useExtensionMessages(
         });
         os.setAgentActive(id, status === 'active');
         if (status === 'waiting') {
+          os.setAgentSkill(id, null);
           os.showWaitingBubble(id, msg.awaitingInput === true);
           playDoneSound();
         }
@@ -706,6 +729,8 @@ export function useExtensionMessages(
         }
         const subToolName = extractToolName(status);
         os.setAgentTool(subId, subToolName);
+        const subSkill = skillNameFromStatus(status);
+        if (subSkill) os.setAgentSkill(subId, subSkill);
         os.setAgentActive(subId, true);
       } else if (msg.type === 'subagentToolDone') {
         const id = msg.id as number;

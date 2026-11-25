@@ -40,7 +40,7 @@ export function VolumeControl({ volume }: { volume: number }) {
               ref={trackRef}
               role="slider"
               tabIndex={0}
-              aria-label="Music volume"
+              aria-label="Volumen de la música"
               aria-orientation="vertical"
               aria-valuemin={0}
               aria-valuemax={100}

@@ -138,9 +138,9 @@ export function MobileAgentBar({
                 ref={menus.buttonRef}
                 type="button"
                 onClick={menus.toggleRoster}
-                aria-label="Roster"
+                aria-label="Plantilla"
                 aria-expanded={menus.isRosterOpen}
-                title={menus.isRosterOpen ? 'Hide roster' : 'Roster'}
+                title={menus.isRosterOpen ? 'Hide roster' : 'Plantilla'}
                 // Enabled even when nothing can launch: a pick then edits.
                 style={{ width: ROSTER_ARROW_WIDTH_PX, height: AGENT_CARD_HEIGHT_PX }}
                 className={`flex items-center justify-center border-2 border-l-bg/40 rounded-none select-none cursor-pointer ${

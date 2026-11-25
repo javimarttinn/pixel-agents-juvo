@@ -40,13 +40,13 @@ import {
 
 /** Shown before the user confirms the install (Settings → Usage Bars). */
 export const USAGE_BRIDGE_DISCLOSURE = [
-  'To show your remaining weekly and 5-hour usage in the top-left corner, Pixel Agents ' +
-    'wraps your status line in ~/.claude/settings.json. It keeps working and looks the same ' +
-    '(with no status line, Claude Code hides some footer hints). A one-time backup is saved as ' +
+  'Para mostrar tu uso semanal y de 5 horas restante arriba a la izquierda, Pixel Agents ' +
+    'envuelve tu status line en ~/.claude/settings.json. Sigue funcionando y se ve igual ' +
+    '(sin status line, Claude Code oculta algunas pistas del pie). Se guarda una única copia de seguridad como ' +
     `settings.json${SETTINGS_BACKUP_SUFFIX}.`,
-  "Only your usage percentages and reset times, and each session's context percentage, are sent, " +
-    'to the Pixel Agents server on this machine.',
-  'You can turn this off at any time from Settings → Usage Bars.',
+  'Solo se envían tus porcentajes de uso y las horas de reinicio, y el porcentaje de contexto de cada sesión, ' +
+    'al servidor de Pixel Agents en este equipo.',
+  'Puedes desactivarlo cuando quieras desde Ajustes → Barras de uso.',
 ].join('\n\n');
 
 /** A window as reported, or undefined when absent or malformed. */

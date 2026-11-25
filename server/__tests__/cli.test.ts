@@ -148,6 +148,11 @@ describe('parseArgs', () => {
     expect(() => parseArgs(['--allowed-host', '0.0.0.0'])).toThrow(CliArgsError);
   });
 
+  it('parses --qr', () => {
+    expect(parseArgs([]).qr).toBe(false);
+    expect(parseArgs(['--qr']).qr).toBe(true);
+  });
+
   it('parses --rotate-token', () => {
     expect(parseArgs([]).rotateToken).toBe(false);
     expect(parseArgs(['--rotate-token']).rotateToken).toBe(true);
@@ -238,7 +243,7 @@ describe('dist/cli.js entry-point guard', () => {
    *  would be testing the helper. The trailing `\s` makes it wait for a
    *  complete line: stdout arrives in chunks, and a half-delivered URL still
    *  parses as a URL (`http://127.0.0.1:501`). */
-  const URL_LINE = /Pixel Agents server running at (\S+)\s/;
+  const URL_LINE = /Oficina de Pixel Agents en (\S+)\s/;
 
   function printedUrl(output: string): URL {
     const match = URL_LINE.exec(output);

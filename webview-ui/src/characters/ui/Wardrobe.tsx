@@ -85,7 +85,7 @@ function SlotOptions({ slot }: { slot: SlotKey }) {
     for (const on of [false, true]) {
       cards.push({
         key: on ? '_under' : '_none',
-        label: on ? 'Underwear' : 'None',
+        label: on ? 'Underwear' : 'Ninguno',
         none: !on,
         pressed: !worn && !!profile[under] === on,
         wear: (p) => setUnderwear(p, slot, on),
@@ -94,7 +94,7 @@ function SlotOptions({ slot }: { slot: SlotKey }) {
   } else if (slot !== 'body') {
     cards.push({
       key: '_none',
-      label: 'None',
+      label: 'Ninguno',
       none: true,
       pressed: !worn,
       wear: (p) => setPart(p, slot, null),
@@ -125,7 +125,7 @@ function EyeShapes() {
   }));
   return (
     <div className="chv-colors">
-      <h2>Shape</h2>
+      <h2>Forma</h2>
       <OptionGrid cards={cards} face />
     </div>
   );
@@ -178,7 +178,9 @@ function SlotPanel() {
           panels.push(<ColorPanel key={picker.key} picker={picker} />);
       }
     } else if (under && profile[under]) {
-      panels.push(<ColorPanel key={under} picker={{ key: under, label: 'Underwear colour' }} />);
+      panels.push(
+        <ColorPanel key={under} picker={{ key: under, label: 'Color de la ropa interior' }} />,
+      );
     }
     const { inner } = def;
     if (inner) {
@@ -192,7 +194,10 @@ function SlotPanel() {
       );
       if (profile[inner])
         panels.push(
-          <ColorPanel key={`${inner}-colour`} picker={{ key: inner, label: `${label} colour` }} />,
+          <ColorPanel
+            key={`${inner}-colour`}
+            picker={{ key: inner, label: `Color de ${label}` }}
+          />,
         );
     }
   }
@@ -260,7 +265,7 @@ function Tabs() {
 export function Wardrobe() {
   const { editor } = useStudio();
   return (
-    <section className="chv-box chv-wardrobe" aria-label="Wardrobe">
+    <section className="chv-box chv-wardrobe" aria-label="Vestuario">
       {editor ? (
         <PixelEditor />
       ) : (

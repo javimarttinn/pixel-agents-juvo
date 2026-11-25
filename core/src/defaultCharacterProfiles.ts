@@ -3,10 +3,12 @@ import { CHARACTER_PROFILE_VERSION, type CharacterProfile } from './characterPro
 /**
  * The six characters a new office starts with: the original bundled cast, rebuilt
  * from wardrobe parts (part ids and colourways are the wardrobe manifest's).
+ * Named for the sub-agent roles they play: a sub-agent whose type matches a
+ * character's name (core/src/subtaskStatus.ts nameMatchesRole) wears that look.
  */
 const CAST: readonly Omit<CharacterProfile, 'v'>[] = [
   {
-    name: 'Suit',
+    name: 'Planner',
     body: 'flat',
     eyeShape: 'plain',
     under: 'basic',
@@ -21,7 +23,7 @@ const CAST: readonly Omit<CharacterProfile, 'v'>[] = [
     },
   },
   {
-    name: 'Dress',
+    name: 'Tester',
     body: 'bust',
     eyeShape: 'lashes',
     utop: 'basic',
@@ -34,7 +36,7 @@ const CAST: readonly Omit<CharacterProfile, 'v'>[] = [
     },
   },
   {
-    name: 'Spike',
+    name: 'Implementer',
     body: 'flat',
     eyeShape: 'plain',
     under: 'basic',
@@ -50,7 +52,7 @@ const CAST: readonly Omit<CharacterProfile, 'v'>[] = [
     },
   },
   {
-    name: 'Aura',
+    name: 'Explorer',
     body: 'bust',
     eyeShape: 'plain',
     utop: 'basic',
@@ -66,7 +68,7 @@ const CAST: readonly Omit<CharacterProfile, 'v'>[] = [
     },
   },
   {
-    name: 'Tidy',
+    name: 'Reviewer',
     body: 'bust',
     eyeShape: 'lashes',
     utop: 'basic',
@@ -82,7 +84,7 @@ const CAST: readonly Omit<CharacterProfile, 'v'>[] = [
     },
   },
   {
-    name: 'Bob',
+    name: 'General',
     body: 'flat',
     eyeShape: 'plain',
     under: 'basic',

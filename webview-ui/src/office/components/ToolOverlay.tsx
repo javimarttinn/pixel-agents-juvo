@@ -19,6 +19,7 @@ import {
   TOOL_OVERLAY_VERTICAL_OFFSET,
 } from '../../constants.js';
 import type { SubagentCharacter } from '../../hooks/useExtensionMessages.js';
+import { leadLevel, roleLevel, skillLevel } from '../../levels/xpStore.js';
 import { ContextBar } from '../ContextBar.js';
 import { contextLeft } from '../contextGauge.js';
 import type { OfficeState } from '../engine/officeState.js';
@@ -32,7 +33,7 @@ import { CharacterState } from '../types.js';
 // shows ONLY the checkmark (the label falls through to its normal idle text);
 // going idle waiting on the user (Notification(idle_prompt)) additionally
 // surfaces this label. Driven by Character.waitingAwaitingInput.
-const WAITING_INPUT_ACTIVITY_TEXT = 'Waiting for input';
+const WAITING_INPUT_ACTIVITY_TEXT = 'Esperando tu respuesta';
 
 interface ToolOverlayProps {
   officeState: OfficeState;
@@ -55,7 +56,7 @@ function getActivityText(
   bubbleType: 'permission' | 'waiting' | null,
   waitingAwaitingInput: boolean,
 ): string {
-  if (bubbleType === 'permission') return 'Needs approval';
+  if (bubbleType === 'permission') return 'Necesita aprobación';
   // Only the idle case ("Waiting for input") gets a dedicated label. A finished
   // turn (Stop, waitingAwaitingInput=false) falls through so the checkmark alone
   // signals "done", same as the original behavior.
@@ -66,7 +67,7 @@ function getActivityText(
     // Find the latest non-done tool
     const activeTool = [...tools].reverse().find((t) => !t.done);
     if (activeTool) {
-      if (activeTool.permissionWait) return 'Needs approval';
+      if (activeTool.permissionWait) return 'Necesita aprobación';
       return activeTool.status;
     }
     // All tools done but agent still active (mid-turn) — keep showing last tool status
@@ -76,7 +77,7 @@ function getActivityText(
     }
   }
 
-  return 'Idle';
+  return 'Libre';
 }
 
 /** A speech-bubble sprite blitted into a DOM canvas. Bubbles live in the DOM
@@ -97,6 +98,29 @@ function OverlayBubble({ cached, dpr }: { cached: HTMLCanvasElement; dpr: number
       className="block"
       style={{ width: cached.width / dpr, height: cached.height / dpr }}
     />
+  );
+}
+
+/** The skill an agent loaded this turn, pinned over its head until the turn ends. */
+function SkillBadge({ name }: { name: string }) {
+  return (
+    <div
+      className="flex items-center gap-4 px-6 pt-1 pb-3 whitespace-nowrap max-w-2xs"
+      style={{
+        background: 'var(--color-skill-bg)',
+        color: 'var(--color-skill-text)',
+        border: '2px solid var(--color-skill-border)',
+        boxShadow: '2px 2px 0px var(--color-shadow)',
+        fontSize: '18px',
+        lineHeight: 1,
+      }}
+      title={`Skill: ${name}`}
+      data-testid="skill-badge"
+    >
+      <PixelIcon name="spark" className="shrink-0 translate-y-1" />
+      <span className="overflow-hidden text-ellipsis">{name}</span>
+      <span className="shrink-0 opacity-80">· Nv {skillLevel(name)}</span>
+    </div>
   );
 }
 
@@ -195,18 +219,37 @@ export function ToolOverlay({
           );
         }
 
-        // Only show the label for hovered or selected agents (unless
-        // always-show is on) — the bubble renders regardless.
-        if (!alwaysShowOverlay && !isSelected && !isHovered) {
-          return bubbleNode && <Fragment key={id}>{bubbleNode}</Fragment>;
-        }
-
         // Position above character: the sprite's top edge (the tallest hair
         // reaches it), or the bubble's when one shows over the head.
         const sittingOffset = ch.state === CharacterState.TYPE ? CHARACTER_SITTING_OFFSET_PX : 0;
         const screenX = project.toScreenX(ch.x);
         const screenY = project.toScreenY(ch.y + sittingOffset - TOOL_OVERLAY_VERTICAL_OFFSET);
         const labelBottom = Math.min(screenY, bubbleTop ?? screenY) - TOOL_OVERLAY_GAP_PX;
+
+        // The skill badge shows for every character working under a skill,
+        // label or not: on its own over the head, or at the top of the label.
+        const skillBadge = ch.activeSkill ? <SkillBadge name={ch.activeSkill} /> : null;
+        const floatingSkill = skillBadge && (
+          <div
+            className="absolute -translate-x-1/2 -translate-y-full pointer-events-none"
+            style={{ left: screenX, top: labelBottom, zIndex: OVERLAY_LABEL_Z_INDEX }}
+          >
+            {skillBadge}
+          </div>
+        );
+
+        // Only show the label for hovered or selected agents (unless
+        // always-show is on) — the bubble and the skill badge render regardless.
+        if (!alwaysShowOverlay && !isSelected && !isHovered) {
+          return (
+            (bubbleNode || floatingSkill) && (
+              <Fragment key={id}>
+                {bubbleNode}
+                {floatingSkill}
+              </Fragment>
+            )
+          );
+        }
 
         // A "Done" agent (finished turn: waiting bubble without awaitingInput)
         // shows ONLY its floating green checkmark bubble, never the label panel
@@ -224,6 +267,7 @@ export function ToolOverlay({
           return (
             <Fragment key={id}>
               {bubbleNode}
+              {floatingSkill}
               <div
                 className="absolute"
                 style={{ left: screenX, top: screenY, pointerEvents: 'none' }}
@@ -244,7 +288,7 @@ export function ToolOverlay({
           activityText = WAITING_INPUT_ACTIVITY_TEXT;
         } else if (isSub) {
           if (subHasPermission) {
-            activityText = 'Needs approval';
+            activityText = 'Necesita aprobación';
           } else {
             // Hover shows the subtask title; SELECTING the sub reveals its live
             // tool activity (watched sub-agents stream it via subagentToolStart).
@@ -252,7 +296,7 @@ export function ToolOverlay({
             const rows = sub ? subagentTools[sub.parentAgentId]?.[sub.parentToolId] : undefined;
             const activeRow =
               isSelected && rows ? [...rows].reverse().find((t) => !t.done) : undefined;
-            activityText = activeRow?.status ?? (sub?.label || 'Subtask');
+            activityText = activeRow?.status ?? (sub?.label || 'Subtarea');
           }
         } else {
           activityText = getActivityText(
@@ -307,6 +351,7 @@ export function ToolOverlay({
               data-testid="agent-overlay"
               data-agent-id={id}
             >
+              {skillBadge && <div style={{ marginBottom: CONTEXT_GAUGE_GAP_PX }}>{skillBadge}</div>}
               <div className="flex items-center border-border px-8 pt-2 pb-4 gap-5 pixel-panel whitespace-nowrap max-w-2xs">
                 {dotColor && (
                   <span
@@ -327,6 +372,15 @@ export function ToolOverlay({
                       {teamRoleLabel}
                     </span>
                   )}
+                  {ch.role && (
+                    <span
+                      className="overflow-hidden text-ellipsis block leading-none"
+                      style={{ fontSize: '18px', color: 'var(--color-skill-border)' }}
+                      data-testid="role-level"
+                    >
+                      {ch.role} · Nv {roleLevel(ch.role)}
+                    </span>
+                  )}
                   <span
                     className="overflow-hidden text-ellipsis block leading-none"
                     style={{
@@ -335,6 +389,12 @@ export function ToolOverlay({
                     }}
                   >
                     {activityText}
+                    {!isSub && (
+                      <span className="text-text-muted" style={{ fontSize: '18px' }}>
+                        {' '}
+                        · Nv {leadLevel()}
+                      </span>
+                    )}
                   </span>
                   {ch.directoryName && (
                     <span className="text-2xs leading-none overflow-hidden text-ellipsis block">
@@ -350,7 +410,7 @@ export function ToolOverlay({
                       e.stopPropagation();
                       onCloseAgent(id);
                     }}
-                    title="Close agent"
+                    title="Cerrar agente"
                     className="ml-2 shrink-0"
                   >
                     {/* The panel's padding favours the text (pb > pt) and the × fills
@@ -365,7 +425,7 @@ export function ToolOverlay({
                   width={CONTEXT_GAUGE_WIDTH_PX}
                   height={CONTEXT_GAUGE_HEIGHT_PX}
                   style={{ marginTop: CONTEXT_GAUGE_GAP_PX }}
-                  title={`${Math.round(contextLeft(contextRatio) * 100)}% context left (${(ch.contextTokens / 1000).toFixed(0)}k of ${(ch.maxContextTokens / 1000).toFixed(0)}k tokens used)`}
+                  title={`${Math.round(contextLeft(contextRatio) * 100)}% de contexto libre (${(ch.contextTokens / 1000).toFixed(0)}k de ${(ch.maxContextTokens / 1000).toFixed(0)}k tokens usados)`}
                   testId="context-gauge"
                   pct={Math.round(contextRatio * 100)}
                 />

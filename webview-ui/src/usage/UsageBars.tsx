@@ -37,7 +37,7 @@ const FILL: Record<BarId, Record<UsageBarView['level'], string>> = {
   },
 };
 /** Each bar's name, before its reset time on hover. */
-const BAR_NAME: Record<BarId, string> = { weekly: 'Weekly', fiveHour: '5-hour' };
+const BAR_NAME: Record<BarId, string> = { weekly: 'Semanal', fiveHour: '5 horas' };
 
 interface UsageBarsProps {
   /** The last usageLimits for the provider; undefined until the server sends it. */
@@ -121,7 +121,7 @@ export function UsageBars({ limits, providerName, mobile }: UsageBarsProps) {
       className={`absolute z-10 flex items-center gap-8 cursor-default ${mobile ? 'mobile-safe-top' : 'top-8'}`}
       style={{ left: USAGE_BARS_LEFT_PX }}
       title={freshnessLabel(limits?.updatedAt, now, providerName)}
-      aria-label={`${providerName} usage. Weekly: ${weekly.percent} left, ${weekly.reset}. 5-hour: ${fiveHour.percent} left, ${fiveHour.reset}.`}
+      aria-label={`Uso de ${providerName}. Semanal: queda ${weekly.percent}, ${weekly.reset}. 5 horas: queda ${fiveHour.percent}, ${fiveHour.reset}.`}
       // A phone's tap also fires the emulated mouseenter, which would cancel
       // the click's toggle, so there only the tap counts.
       onMouseEnter={mobile ? undefined : () => setActive(true)}

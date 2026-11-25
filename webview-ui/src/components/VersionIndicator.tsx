@@ -87,23 +87,23 @@ export function VersionIndicator({
         >
           <div className="flex justify-between items-center gap-10">
             <span className="text-lg text-accent-bright leading-none">
-              Updated to v{currentMajorMinor}!
+              ¡Actualizado a v{currentMajorMinor}!
             </span>
             <Button variant="ghost" size="icon" onClick={handleDismiss} className="leading-none">
               x
             </Button>
           </div>
-          <span className="text-sm whitespace-nowrap">See what's new</span>
+          <span className="text-sm whitespace-nowrap">Novedades</span>
         </div>
       )}
-      {/* Hover tooltip — "See what's new" appears on label hover after notice is gone */}
+      {/* Hover tooltip — "Novedades" appears on label hover after notice is gone */}
       {!showUpdateNotice && labelHovered && (
         <div
           onClick={handleOpenChangelog}
           className="absolute right-28 z-20 pixel-panel py-6 px-12 cursor-pointer text-sm whitespace-nowrap"
           style={{ bottom: NOTICE_BOTTOM, transition: RIDE_ABOVE_RADIO }}
         >
-          See what's new!
+          ¡Mira las novedades!
         </div>
       )}
       {/* Version label — always visible, riding above the office radio (MusicPlayer) */}

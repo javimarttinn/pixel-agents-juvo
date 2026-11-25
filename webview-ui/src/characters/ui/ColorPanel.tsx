@@ -58,6 +58,13 @@ function parseHex(text: string): string | null {
   return `#${digits.toLowerCase()}`;
 }
 
+/** Spanish names for the eye's coloured pixel (EYE_ROWS). */
+const EYE_ROW_LABELS: Record<string, string> = {
+  top: 'Superior',
+  bottom: 'Inferior',
+  both: 'Ambos',
+};
+
 const SQUARE_PX = 40;
 const HUE_PX = 64;
 
@@ -133,7 +140,7 @@ function Picker({
           id={`${id}-sb`}
           tabIndex={0}
           role="slider"
-          aria-label={`${picker.label} saturation and brightness`}
+          aria-label={`${picker.label}: saturación y brillo`}
           aria-valuetext={`saturation ${value.s}, brightness ${value.b}`}
           onPick={(fx, fy) =>
             write({ s: valueAt('s', live.current, fx), b: valueAt('b', live.current, 1 - fy) })
@@ -167,7 +174,7 @@ function Picker({
           id={`${id}-h`}
           tabIndex={0}
           role="slider"
-          aria-label={`${picker.label} hue`}
+          aria-label={`${picker.label}: tono`}
           aria-valuenow={value.h}
           onPick={(_fx, fy) => write({ h: valueAt('h', live.current, fy) })}
           onKeyDown={(e) => {
@@ -209,14 +216,14 @@ function Picker({
             variant="inline"
             className="chv-check"
             checked={!!value.colorize}
-            title="Colorize sets an absolute hue and saturation instead of shifting the original colours"
+            title="Colorear fija un tono y una saturación absolutos en lugar de desplazar los colores originales"
             onChange={toggleColorize}
-            label="Colorize"
+            label="Colorear"
           />
         )}
       </div>
       <label className="chv-c-lab" htmlFor={`${id}-c`}>
-        Contrast
+        Contraste
       </label>
       <output className="chv-c-out" htmlFor={`${id}-c`}>
         <PixelText text={String(value.c)} />
@@ -293,7 +300,7 @@ export function ColorPanel({ picker }: { picker: ColorPicker }) {
   } else {
     // eyes, lashes and underwear: the art as drawn, then swatches fitted to the part's shading
     squares.push({
-      label: 'As drawn',
+      label: 'Original',
       hex: renderer.wayHex(art, ZERO_COLOR),
       value: () => ZERO_COLOR,
       pressed: asDrawnPressed,
@@ -324,8 +331,8 @@ export function ColorPanel({ picker }: { picker: ColorPicker }) {
         <button
           type="button"
           className="chv-sw chv-wheel"
-          title="Custom colour"
-          aria-label={`${picker.label}: custom colour`}
+          title="Color personalizado"
+          aria-label={`${picker.label}: color personalizado`}
           aria-pressed={pickerOpen === key}
           onClick={() => setPickerOpen(pickerOpen === key ? null : key)}
         />
@@ -356,11 +363,11 @@ export function ColorPanel({ picker }: { picker: ColorPicker }) {
       {key === 'eyes' && (
         // which of each eye's two pixels takes the colour (the other is black pupil)
         <ChoiceRow
-          label="Colour on"
+          label="Color en"
           options={EYE_ROWS.map((rows) => ({
             id: rows,
-            label: rows[0].toUpperCase() + rows.slice(1),
-            title: `Colour the ${rows === 'both' ? 'whole eye' : `${rows} pixel of each eye`} in every frame`,
+            label: EYE_ROW_LABELS[rows] ?? rows,
+            title: `Colorear ${rows === 'both' ? 'todo el ojo' : `el píxel ${EYE_ROW_LABELS[rows]?.toLowerCase() ?? rows} de cada ojo`} en todos los fotogramas`,
             pressed: (profile.eyeRows ?? DEFAULT_EYE_ROWS) === rows,
             onClick: () =>
               edit((p) => {

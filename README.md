@@ -1,3 +1,5 @@
+> **Fork de Javi:** versión en español con skills visibles, personajes por rol, niveles y acceso móvil. Lee [LEEME.md](LEEME.md).
+
 <h1 align="center">
   <a href="https://github.com/pixel-agents-hq/pixel-agents/discussions">
     <img src="webview-ui/public/banner.png" alt="Pixel Agents" width="728">

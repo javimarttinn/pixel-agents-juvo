@@ -120,6 +120,8 @@ components:
         # Usage bars (the account's plan limits)
         - $ref: '#/components/schemas/UsageBridgeStatus'
         - $ref: '#/components/schemas/UsageLimits'
+        # Office levels (XP per lead, role and skill)
+        - $ref: '#/components/schemas/XpState'
         - $ref: '#/components/schemas/ExternalAssetDirectoriesUpdated'
         - $ref: '#/components/schemas/AreaMappingsLoaded'
         - $ref: '#/components/schemas/CardOrderLoaded'
@@ -859,6 +861,29 @@ components:
         updatedAt:
           type: number
           description: When the last report arrived (epoch milliseconds).
+
+    XpState:
+      description: |
+        The office's experience totals: the main agents' (lead), each
+        sub-agent role's (keyed by normalized role name) and each skill's.
+        Sent on connect and, throttled, whenever a tool call earns XP.
+        Levels are derived on the client (core/src/xp.ts levelOf).
+      type: object
+      additionalProperties: false
+      required: [type, lead, roles, skills]
+      properties:
+        type:
+          const: xpState
+        lead:
+          type: number
+        roles:
+          type: object
+          additionalProperties:
+            type: number
+        skills:
+          type: object
+          additionalProperties:
+            type: number
 
     HooksConsentRequest:
       description: |

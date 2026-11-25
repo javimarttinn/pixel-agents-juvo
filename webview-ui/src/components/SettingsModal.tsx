@@ -87,7 +87,7 @@ export function SettingsModal({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} title="Settings">
+      <Modal isOpen={isOpen} onClose={onClose} title="Ajustes">
         {/* Open Sessions Folder opens an OS file manager — impossible in the browser. */}
         {!isBrowserRuntime && (
           <MenuItem
@@ -96,7 +96,7 @@ export function SettingsModal({
               onClose();
             }}
           >
-            Open Sessions Folder
+            Abrir carpeta de sesiones
           </MenuItem>
         )}
         <MenuItem
@@ -109,7 +109,7 @@ export function SettingsModal({
             onClose();
           }}
         >
-          Export Layout
+          Exportar oficina
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -122,7 +122,7 @@ export function SettingsModal({
             }
           }}
         >
-          Import Layout
+          Importar oficina
         </MenuItem>
         {isBrowserRuntime && (
           <input
@@ -147,7 +147,7 @@ export function SettingsModal({
             <input
               type="text"
               value={assetDirDraft}
-              placeholder="Absolute asset directory path"
+              placeholder="Ruta absoluta de la carpeta de assets"
               onChange={(e) => setAssetDirDraft(e.target.value)}
               className="flex-1 min-w-0 text-xs py-2 px-4 bg-bg border-2 border-border rounded-none text-text"
             />
@@ -162,7 +162,7 @@ export function SettingsModal({
               }}
               className="shrink-0"
             >
-              Add
+              Añadir
             </Button>
           </div>
         ) : (
@@ -172,7 +172,7 @@ export function SettingsModal({
               onClose();
             }}
           >
-            Add Asset Directory
+            Añadir carpeta de assets
           </MenuItem>
         )}
         {externalAssetDirectories.map((dir) => (
@@ -194,7 +194,7 @@ export function SettingsModal({
           </div>
         ))}
         <Checkbox
-          label="Sound Notifications"
+          label="Avisos sonoros"
           checked={soundLocal}
           onChange={() => {
             const newVal = !isSoundEnabled();
@@ -204,26 +204,26 @@ export function SettingsModal({
           }}
         />
         <Checkbox
-          label="Music Player"
-          title="The office radio's player, bottom of the office"
+          label="Reproductor de música"
+          title="El reproductor de la radio, abajo en la oficina"
           checked={!radio.hidden}
           onChange={() => officeRadio.setHidden(!radio.hidden)}
         />
         <Checkbox
-          label="Watch All Sessions"
+          label="Ver todas las sesiones"
           checked={watchAllSessions}
           onChange={onToggleWatchAllSessions}
         />
         <Checkbox
-          label="Instant Detection (Hooks)"
+          label="Detección instantánea (hooks)"
           checked={hooksInstalled}
           onChange={onToggleHooksEnabled}
         />
         {usageBridge && (
           <>
             <Checkbox
-              label="Usage Bars"
-              title={`Your ${usageBridge.providerName} plan's weekly and 5-hour usage, top-left`}
+              label="Barras de uso"
+              title={`Uso semanal y de 5 horas de tu plan de ${usageBridge.providerName}, arriba a la izquierda`}
               checked={usageBridge.installed}
               onChange={() => {
                 if (usagePending) return;
@@ -237,7 +237,7 @@ export function SettingsModal({
           </>
         )}
         <Checkbox
-          label="Always Show Labels"
+          label="Mostrar siempre etiquetas"
           checked={alwaysShowOverlay}
           onChange={onToggleAlwaysShowOverlay}
         />
@@ -245,20 +245,20 @@ export function SettingsModal({
           Standalone has no terminals at all, so nothing there would ever ghost. */}
         {!isBrowserRuntime && (
           <Checkbox
-            label="Display Headless as Ghosts"
+            label="Agentes sin terminal como fantasmas"
             checked={ghostHeadlessAgents}
             onChange={onToggleGhostHeadlessAgents}
           />
         )}
         {showAreasAvailable && (
-          <Checkbox label="Show Areas" checked={showAreas} onChange={onToggleShowAreas} />
+          <Checkbox label="Mostrar áreas" checked={showAreas} onChange={onToggleShowAreas} />
         )}
         {/* Permission posture, set once instead of per launch: while on, the host
           adds the CLI's skip-permissions flag to every agent it launches. */}
         <Checkbox
           label={
             <span className="flex items-center gap-4">
-              Skip Permissions
+              Saltar permisos
               <PixelIcon name="warning" />
             </span>
           }
@@ -269,17 +269,17 @@ export function SettingsModal({
           host contributes: VS Code its workspace folders, standalone the
           directory the server was started from. */}
         <Checkbox
-          label={isBrowserRuntime ? 'Show Start Directory' : 'Show Workspace Folders'}
+          label={isBrowserRuntime ? 'Mostrar carpeta de inicio' : 'Mostrar carpetas del workspace'}
           checked={showHostDirectories}
           onChange={onToggleShowHostDirectories}
         />
-        <Checkbox label="Debug View" checked={isDebugMode} onChange={onToggleDebugMode} />
+        <Checkbox label="Vista de depuración" checked={isDebugMode} onChange={onToggleDebugMode} />
       </Modal>
       {usageBridge && (
         <Modal
           isOpen={confirmUsageBars}
           onClose={() => setConfirmUsageBars(false)}
-          title="Show usage bars?"
+          title="¿Mostrar barras de uso?"
           zIndex={60}
         >
           <div className="flex flex-col gap-8 px-10 pb-8 text-sm leading-snug max-w-md">
@@ -290,7 +290,7 @@ export function SettingsModal({
             ))}
             <div className="flex justify-end gap-8 pt-4">
               <Button variant="ghost" onClick={() => setConfirmUsageBars(false)}>
-                Cancel
+                Cancelar
               </Button>
               <Button
                 variant="accent"
@@ -299,7 +299,7 @@ export function SettingsModal({
                   setUsageBars(true);
                 }}
               >
-                Connect
+                Conectar
               </Button>
             </div>
           </div>

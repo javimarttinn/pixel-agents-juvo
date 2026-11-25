@@ -77,7 +77,7 @@ function fadedSprite(d: Drawable, zoom: number, bg: string): HTMLCanvasElement {
   return canvas;
 }
 
-/** "Loading the office" with its dots counting up. The missing dots are kept (invisible) so
+/** "Cargando la oficina" with its dots counting up. The missing dots are kept (invisible) so
  *  the words never shift; reduced motion shows all three, still. */
 function LoadingText() {
   const [dots, setDots] = useState(LOADING_MAX_DOTS);
@@ -88,7 +88,7 @@ function LoadingText() {
   }, []);
   return (
     <span className="text-lg text-text-muted" role="status">
-      Loading the office
+      Cargando la oficina
       <span aria-hidden="true">
         {'.'.repeat(dots)}
         <span className="invisible">{'.'.repeat(LOADING_MAX_DOTS - dots)}</span>
@@ -98,7 +98,7 @@ function LoadingText() {
 }
 
 /** The default characters the scene is cast from, by name. */
-const CAST_NAMES = { left: 'Suit', right: 'Dress', walker: 'Aura' } as const;
+const CAST_NAMES = { left: 'Planner', right: 'Tester', walker: 'Explorer' } as const;
 
 /**
  * The loading screen: while the office loads, a lamp-lit corner of it in a dark room — two of

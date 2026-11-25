@@ -77,7 +77,7 @@ describe('directories', () => {
       fs.writeFileSync(file, 'hi', 'utf-8');
       const result = validateDirectoryPath(file);
       expect(result.ok).toBe(false);
-      expect(result.ok === false && result.reason).toMatch(/[Nn]ot a directory/);
+      expect(result.ok === false && result.reason).toMatch(/[Nn]o es una carpeta/);
     });
 
     it('rejects an empty path', () => {

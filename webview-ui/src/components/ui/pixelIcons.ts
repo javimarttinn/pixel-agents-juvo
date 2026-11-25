@@ -333,6 +333,28 @@ export const ICONS = {
     '.....##.',
     '......##',
   ],
+  // A trophy: the Levels panel.
+  trophy: [
+    '########',
+    '#.####.#',
+    '#.####.#',
+    '.######.',
+    '..####..',
+    '...##...',
+    '..####..',
+    '.######.',
+  ],
+  // A four-point spark: the skill badge over an agent using a skill.
+  spark: [
+    '...#....',
+    '...#....',
+    '..###...',
+    '#######.',
+    '..###...',
+    '...#....',
+    '...#....',
+    '........',
+  ],
 } as const satisfies Record<string, readonly string[]>;
 
 export type PixelIconName = keyof typeof ICONS;
