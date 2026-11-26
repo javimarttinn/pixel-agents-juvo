@@ -11,7 +11,7 @@ Fork de [pixel-agents-hq/pixel-agents](https://github.com/pixel-agents-hq/pixel-
 | **Niveles y XP**          | Cada herramienta da 1 XP a quien la usa (el agente principal o el rol del subagente), cada subagente lanzado da 5 XP a su rol y cada skill cargada suma 10 XP a esa skill. El botón **Niveles** (y el menú en el móvil) enseña el progreso. Se guarda en `~/.pixel-agents/xp.json`.                                                                                                      |
 | **Interfaz en español**   | Estados (`Leyendo…`, `Ejecutando: …`, `Necesita aprobación`), menús, ajustes, editor de oficina y de personajes, avisos y el texto de consentimiento de los hooks.                                                                                                                                                                                                                       |
 | **Móvil**                 | `--qr` imprime un QR para abrir la oficina en el teléfono y `scripts/oficina.ps1 -Movil` lo deja todo listo con Tailscale.                                                                                                                                                                                                                                                               |
-| **Plantillas de agentes** | `plantillas/agents/` trae `planner`, `implementer`, `reviewer` y `tester`, con nombres que encajan con el reparto.                                                                                                                                                                                                                                                                       |
+| **Plantillas de agentes** | `plantillas/agents/` trae `fixer`, `implementer`, `reviewer`, `build-fixer`, `security-reviewer` y `visual-reviewer`, pensados para usarse con el fork [superpowers-juvo](https://github.com/javimarttinn/superpowers-juvo).                                                                                                                                                             |
 
 ## Arrancar en Windows 11
 
@@ -37,13 +37,28 @@ Trata el QR y la URL con token como una contraseña: dan control total de la ofi
 
 ## Plantillas de agentes
 
-Copia las que quieras a tu carpeta de agentes de usuario:
+Seis subagentes pensados para el fork [superpowers-juvo](https://github.com/javimarttinn/superpowers-juvo), que reparte cada tarea por niveles (Trivial, Pequeña, Funcionalidad):
+
+| Agente              | Modelo | Para qué                                                            |
+| ------------------- | ------ | ------------------------------------------------------------------- |
+| `fixer`             | Sonnet | Tareas pequeñas (hasta 3 archivos), sin plan ni revisión            |
+| `implementer`       | Sonnet | Cada tarea de un plan de superpowers                                |
+| `reviewer`          | Opus   | Revisión de cada tarea y de la rama; solo lectura                   |
+| `build-fixer`       | Sonnet | Errores de build, tipos o lint con el cambio mínimo                 |
+| `security-reviewer` | Opus   | Cambios que tocan auth, pagos, RLS o datos personales; solo lectura |
+| `visual-reviewer`   | Sonnet | Comprueba en el navegador cambios visuales en móvil y escritorio    |
+
+Cópialos a tu carpeta de agentes de usuario:
 
 ```powershell
 Copy-Item .\plantillas\agents\*.md $HOME\.claude\agents\
 ```
 
-O a `.claude/agents/` dentro de un proyecto si solo las quieres ahí. `planner` y `reviewer` usan Opus y son de solo lectura; `implementer` y `tester` usan Sonnet para abaratar la ejecución.
+```bash
+cp plantillas/agents/*.md ~/.claude/agents/
+```
+
+Para que en la oficina salgan con su personaje, crea en el reparto personajes llamados Fixer, Build Fixer, Security Reviewer y Visual Reviewer (mayúsculas, espacios y guiones dan igual). Implementer y Reviewer ya vienen en el reparto por defecto.
 
 ## Desarrollo
 
